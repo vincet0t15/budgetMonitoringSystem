@@ -98,6 +98,17 @@ export default function CreateDocument({ open, setOpen, projectId }: Props) {
                         />
                         <InputError message={errors.particulars} />
                     </div>
+                    <div className="grid gap-2">
+                        <Label>Particulars</Label>
+                        <Textarea
+                            value={data.particulars}
+                            name="particulars"
+                            className="w-full dark:bg-input/30"
+                            placeholder="Particulars"
+                            onChange={handleInputChange}
+                        />
+                        <InputError message={errors.particulars} />
+                    </div>
 
                     <div className="grid gap-4 md:grid-cols-3">
                         <div className="grid gap-2">
