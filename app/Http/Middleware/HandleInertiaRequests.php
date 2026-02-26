@@ -44,7 +44,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'sharedProjects' => $request->user()
-                ? $request->user()->projects()->latest()->limit(6)->get(['id', 'name'])
+                ? $request->user()->projects()->latest()->limit(5)->get(['id', 'name'])
                 : [],
             'flash' => [
                 'success' => fn() => $request->session()->get('success'),
