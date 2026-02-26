@@ -25,6 +25,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { usePage } from "@inertiajs/react"
 
 
 const data = {
@@ -157,6 +158,13 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { auth } = usePage().props as any
+  const userProjects = auth.projects.map((p: any) => ({
+    name: p.name,
+    url: `/projects/${p.id}`,
+    icon: Frame,
+  }))
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -164,10 +172,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavProjects projects={userProjects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={auth.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

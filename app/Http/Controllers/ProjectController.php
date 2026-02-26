@@ -19,7 +19,7 @@ class ProjectController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
 
-        Project::create($request->all());
+        $request->user()->projects()->create($request->all());
 
         return redirect()->back()->with('success', 'Project created successfully.');
     }
