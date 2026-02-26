@@ -42,7 +42,43 @@ class DocumentController extends Controller
 
         return redirect()->back()->with('success', 'Document updated successfully.');
     }
+    /**
+     * Bulk mark documents as returned
+     */
+    public function bulkMarkAsReturned(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:documents,id',
+        ]);
 
+        Document::whereIn('id', $request->input('ids'))
+            ->update([
+                'is_returned' => true,
+                'returned_at' => now('singapore'),
+            ]);
+
+        return redirect()->back()->with('success', 'Selected documents marked as returned.');
+    }
+
+    /**
+     * Bulk mark documents as pending (not returned)
+     */
+    public function bulkMarkAsPending(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:documents,id',
+        ]);
+
+        Document::whereIn('id', $request->input('ids'))
+            ->update([
+                'is_returned' => false,
+                'returned_at' => null,
+            ]);
+
+        return redirect()->back()->with('success', 'Selected documents marked as pending.');
+    }
     /**
      * Mark a document as returned to office
      */

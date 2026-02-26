@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import {
@@ -84,6 +85,22 @@ export default function Dashboard({ project, documents, filters }: Props) {
     const [editingDocument, setEditingDocument] =
         useState<DocumentProps | null>(null);
 
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+    const toggleSelect = (id: number) => {
+        setSelectedIds((prev) =>
+            prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+        );
+    };
+
+    const toggleSelectAll = () => {
+        if (selectedIds.length === documents.data.length) {
+            setSelectedIds([]);
+        } else {
+            setSelectedIds(documents.data.map((d) => d.id));
+        }
+    };
+
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setData('search', e.target.value);
     };
@@ -91,6 +108,24 @@ export default function Dashboard({ project, documents, filters }: Props) {
     const handleEdit = (doc: DocumentProps) => {
         setEditingDocument(doc);
         setOpenEditDocument(true);
+    };
+
+    const handleBulkReturn = () => {
+        if (selectedIds.length === 0) return;
+        router.post('/documents/bulk-return', { ids: selectedIds }, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+        setSelectedIds([]);
+    };
+
+    const handleBulkPending = () => {
+        if (selectedIds.length === 0) return;
+        router.post('/documents/bulk-pending', { ids: selectedIds }, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+        setSelectedIds([]);
     };
 
     const handleMarkAsReturned = (documentId: number) => {
@@ -160,12 +195,39 @@ export default function Dashboard({ project, documents, filters }: Props) {
                             />
                         </div>
                     </div>
+                    {selectedIds.length > 0 && (
+                        <div className="flex gap-2 mt-2">
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={handleBulkReturn}
+                            >
+                                Mark selected as returned
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={handleBulkPending}
+                            >
+                                Mark selected as not returned
+                            </Button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="w-full overflow-hidden rounded-sm border shadow-sm">
                     <Table>
                         <TableHeader className="sticky top-0 z-10 bg-muted">
                             <TableRow className="dark:bg-gray-800">
+                                <TableHead className="w-5">
+                                    <Checkbox
+                                        checked={
+                                            selectedIds.length === documents.data.length &&
+                                            documents.data.length > 0
+                                        }
+                                        onCheckedChange={toggleSelectAll}
+                                    />
+                                </TableHead>
                                 <TableHead className="w-5">#</TableHead>
                                 <TableHead className="">Serial No.</TableHead>
                                 <TableHead className="">Payee</TableHead>
@@ -186,7 +248,13 @@ export default function Dashboard({ project, documents, filters }: Props) {
                             {documents.data.length > 0 ? (
                                 documents.data.map((data, index) => (
                                     <TableRow key={index}>
-                                        <TableCell className="font-medium">
+                                        <TableCell className="w-5">
+                                            <Checkbox
+                                                checked={selectedIds.includes(data.id)}
+                                                onCheckedChange={() => toggleSelect(data.id)}
+                                            />
+                                        </TableCell>
+                                        <TableCell className="font-medium w-5">
                                             {index + 1}
                                         </TableCell>
                                         <TableCell className="font-medium">
@@ -266,7 +334,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
                             ) : (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={9}
+                                        colSpan={11}
                                         className="text-center"
                                     >
                                         No data available

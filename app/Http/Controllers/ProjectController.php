@@ -47,7 +47,8 @@ class ProjectController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('serial_no', 'like', "%{$search}%")
                     ->orWhere('payee', 'like', "%{$search}%")
-                    ->orWhere('particulars', 'like', "%{$search}%");
+                    ->orWhere('particulars', 'like', "%{$search}%")
+                    ->orWhere('remarks', 'like', "%{$search}%");
             });
         }
 
