@@ -25,6 +25,7 @@ import React, {
 } from 'react';
 import CreateDocument from '../documents/create';
 import EditDocument from '../documents/edit';
+import ViewDocument from '../documents/view';
 import { Label } from '@/components/ui/label';
 import { FilterProps } from '@/types/filter';
 import projects from '@/routes/projects';
@@ -82,7 +83,10 @@ export default function Dashboard({ project, documents, filters }: Props) {
 
     const [openCreateDocument, setOpenCreateDocument] = React.useState(false);
     const [openEditDocument, setOpenEditDocument] = React.useState(false);
+    const [openViewDocument, setOpenViewDocument] = React.useState(false);
     const [editingDocument, setEditingDocument] =
+        useState<DocumentProps | null>(null);
+    const [viewingDocument, setViewingDocument] =
         useState<DocumentProps | null>(null);
 
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -108,6 +112,11 @@ export default function Dashboard({ project, documents, filters }: Props) {
     const handleEdit = (doc: DocumentProps) => {
         setEditingDocument(doc);
         setOpenEditDocument(true);
+    };
+
+    const handleView = (doc: DocumentProps) => {
+        setViewingDocument(doc);
+        setOpenViewDocument(true);
     };
 
     const handleBulkReturn = () => {
@@ -253,13 +262,18 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                             {index + 1}
                                         </TableCell>
                                         <TableCell className="font-medium">
-                                            <Label>{data.serial_no}</Label>
+                                            <Label
+                                                className="cursor-pointer text-blue-600 hover:underline"
+                                                onClick={() => handleView(data)}
+                                            >
+                                                {data.serial_no}
+                                            </Label>
                                         </TableCell>
                                         <TableCell className="font-medium">
                                             <Label>{data.payee}</Label>
                                         </TableCell>
-                                        <TableCell className="max-w-[200px] overflow-hidden font-medium">
-                                            <Label className="block truncate overflow-hidden whitespace-nowrap">
+                                        <TableCell className="max-w-xs overflow-hidden font-medium">
+                                            <Label className="block truncate">
                                                 {data.particulars}
                                             </Label>
                                         </TableCell>
@@ -272,8 +286,8 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                         <TableCell className="font-medium">
                                             <Label>{data.ammount}</Label>
                                         </TableCell>
-                                        <TableCell className="max-w-[250px] overflow-hidden font-medium">
-                                            <Label className="block truncate overflow-hidden whitespace-nowrap">
+                                        <TableCell className="max-w-xs overflow-hidden font-medium">
+                                            <Label className="block truncate">
                                                 {data.remarks || '-'}
                                             </Label>
                                         </TableCell>
@@ -338,6 +352,13 @@ export default function Dashboard({ project, documents, filters }: Props) {
                         open={openEditDocument}
                         setOpen={setOpenEditDocument}
                         document={editingDocument}
+                    />
+                )}
+                {openViewDocument && viewingDocument && (
+                    <ViewDocument
+                        open={openViewDocument}
+                        setOpen={setOpenViewDocument}
+                        document={viewingDocument}
                     />
                 )}
             </div>
