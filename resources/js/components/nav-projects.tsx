@@ -7,6 +7,7 @@ import {
   PlusIcon,
   Trash2,
   type LucideIcon,
+  Frame,
 } from "lucide-react"
 
 import {
@@ -27,62 +28,71 @@ import {
 } from "@/components/ui/sidebar"
 import { useState } from "react"
 import { CreateProjectDialog } from "@/pages/project/create"
+import { Link } from "@inertiajs/react"
 
-export function NavProjects({
-  projects,
-}: {
-  projects: {
-    name: string
-    url: string
-    icon: LucideIcon
-  }[]
-}) {
+type Project = {
+  id: number
+  name: string
+}
+export function NavProjects({ projects = [] }: { projects?: Project[] }) {
   const { isMobile } = useSidebar()
   const [openCreateProject, setOpenCreateProject] = useState(false)
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center px-2">
         <SidebarGroupLabel>Projects</SidebarGroupLabel>
-        <PlusIcon onClick={() => setOpenCreateProject(true)} className="text-sidebar-foreground/70 size-4 hover:text-sidebar-foreground cursor-pointer" />
+        <PlusIcon
+          onClick={() => setOpenCreateProject(true)}
+          className="text-sidebar-foreground/70 size-4 hover:text-sidebar-foreground cursor-pointer"
+        />
       </div>
       <SidebarMenu>
-        {projects.map((item) => (
-          <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
-              <a href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
-              </a>
+        {projects && projects.length > 0 ? (
+          projects.map((item) => (
+            <SidebarMenuItem key={item.id}>
+              <SidebarMenuButton asChild>
+                <Link href={`/projects/${item.id}`}>
+                  <Frame />
+                  <span>{item.name}</span>
+                </Link>
+              </SidebarMenuButton>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuAction showOnHover>
+                    <MoreHorizontal />
+                    <span className="sr-only">More</span>
+                  </SidebarMenuAction>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="w-48 rounded-lg"
+                  side={isMobile ? "bottom" : "right"}
+                  align={isMobile ? "end" : "start"}
+                >
+                  <DropdownMenuItem>
+                    <Folder className="text-muted-foreground" />
+                    <span>View Project</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Forward className="text-muted-foreground" />
+                    <span>Share Project</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Trash2 className="text-muted-foreground" />
+                    <span>Delete Project</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SidebarMenuItem>
+          ))
+        ) : (
+          <SidebarMenuItem>
+            <SidebarMenuButton disabled>
+              <span className="text-muted-foreground italic">No projects found</span>
             </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover>
-                  <MoreHorizontal />
-                  <span className="sr-only">More</span>
-                </SidebarMenuAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-48 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                <DropdownMenuItem>
-                  <Folder className="text-muted-foreground" />
-                  <span>View Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Forward className="text-muted-foreground" />
-                  <span>Share Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Trash2 className="text-muted-foreground" />
-                  <span>Delete Project</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </SidebarMenuItem>
-        ))}
+        )}
         <SidebarMenuItem>
           <SidebarMenuButton className="text-sidebar-foreground/70">
             <MoreHorizontal className="text-sidebar-foreground/70" />
@@ -94,6 +104,5 @@ export function NavProjects({
         <CreateProjectDialog open={openCreateProject} isOpen={setOpenCreateProject} />
       )}
     </SidebarGroup>
-
   )
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -43,7 +44,12 @@ class HandleInertiaRequests extends Middleware
                 'projects' => $request->user() ? $request->user()->projects()->latest()->get() : [],
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
-
+            'sharedProjects' => $request->user()
+                ? Project::where('user_id', $request->user()->id)
+                ->latest()
+                ->limit(5)
+                ->get(['id', 'name'])
+                : [],
             'flash' => [
                 'success' => fn() => $request->session()->get('success'),
                 'error' => fn() => $request->session()->get('error'),

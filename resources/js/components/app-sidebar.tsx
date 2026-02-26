@@ -138,32 +138,10 @@ const data = {
       ],
     },
   ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { auth } = usePage().props as any
-  const userProjects = auth.projects.map((p: any) => ({
-    name: p.name,
-    url: `/projects/${p.id}`,
-    icon: Frame,
-  }))
+  const { auth, sharedProjects } = usePage().props as any;
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -172,7 +150,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={userProjects} />
+        <NavProjects projects={sharedProjects} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={auth.user} />
