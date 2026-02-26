@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class Document extends Model
@@ -12,7 +13,7 @@ class Document extends Model
 
     protected $fillable = [
         'date_created',
-        'user_id',
+        'serial_no',
         'payee',
         'particulars',
         'fpp',
@@ -31,8 +32,7 @@ class Document extends Model
         parent::boot();
 
         static::creating(function ($document) {
-            $document->user_id = Auth::id();
-            $document->date_created = now();
+            $document->date_created = Carbon::now('singapore')->toDateTimeString();
         });
     }
 }

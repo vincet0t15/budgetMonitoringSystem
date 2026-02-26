@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import projects from '@/routes/projects';
+import documents from '@/routes/documents';
 import { DocumentTypes } from '@/types/document';
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
@@ -37,7 +37,7 @@ export default function CreateDocument({ open, setOpen, projectId }: Props) {
 
     const submit: SubmitEventHandler = (e) => {
         e.preventDefault();
-        post(projects.store().url, {
+        post(documents.store().url, {
             onSuccess: (response: { props: FlashProps }) => {
                 toast.success(response.props.flash?.success);
                 reset();

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('fpp');
             $table->text('account_code');
             $table->text('ammount');
-            $table->text('remarks');
+            $table->text('remarks')->nullable();
             $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
