@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import {
     Table,
@@ -13,18 +14,24 @@ import { type BreadcrumbItem } from '@/types';
 import { DocumentProps } from '@/types/document';
 import { PaginatedDataResponse } from '@/types/pagination';
 import Pagination from '@/components/paginationData';
-import { Head } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
 import { ProjectProps } from '@/types/proejct';
-import React from 'react';
+import React, {
+    ChangeEventHandler,
+    KeyboardEventHandler,
+    useState,
+} from 'react';
 import CreateDocument from '../documents/create';
 import { Label } from '@/components/ui/label';
+import { FilterProps } from '@/types/filter';
 
 interface Props {
     project: ProjectProps;
     documents: PaginatedDataResponse<DocumentProps>;
+    filters: FilterProps;
 }
-export default function Dashboard({ project, documents }: Props) {
+export default function Dashboard({ project, documents, filters }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: project.name,
@@ -32,7 +39,49 @@ export default function Dashboard({ project, documents }: Props) {
         },
     ];
 
+    const { data, setData } = useForm({
+        search: filters.search,
+    });
+
+    const tabs = [
+        { label: 'All', value: 'all' },
+        { label: 'Not Return', value: 'not_return' },
+        { label: 'Return', value: 'return' },
+    ];
+    const [tab, setTab] = useState<string>(filters.statusId ?? 'all');
+
+    const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+        if (e.key === 'Enter') {
+            const params: Record<string, string> = {};
+
+            if (data.search) params.search = data.search;
+            if (tab && tab !== 'all') params.statusId = tab;
+
+            router.get('document.index', params, {
+                preserveState: true,
+                preserveScroll: true,
+            });
+        }
+    };
+
+    const handleTabChange = (value: string) => {
+        const params: Record<string, string> = {};
+
+        if (value !== 'all') {
+            params.statusId = value;
+        }
+
+        router.get('document.index', params, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    };
     const [openCreateDocument, setOpenCreateDocument] = React.useState(false);
+
+    const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+        setData('search', e.target.value);
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
@@ -50,6 +99,32 @@ export default function Dashboard({ project, documents }: Props) {
 
                     <div className="flex items-center gap-2">
                         <Input placeholder="Search..." className="" />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <Tabs
+                            value={tab}
+                            onValueChange={(value) => {
+                                setTab(value);
+                                handleTabChange(value);
+                            }}
+                        >
+                            <TabsList>
+                                {tabs.map((t, index) => (
+                                    <TabsTrigger key={index} value={t.value}>
+                                        {t.label}
+                                    </TabsTrigger>
+                                ))}
+                            </TabsList>
+                        </Tabs>
+
+                        <Input
+                            onKeyDown={handleKeyDown}
+                            onChange={handleSearchChange}
+                            placeholder="Search..."
+                            name="search"
+                            value={data.search}
+                        />
                     </div>
                 </div>
 
