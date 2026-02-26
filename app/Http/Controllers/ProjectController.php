@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -26,8 +28,15 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        abort_if($project->user_id !== Auth::id(), 403);
+
+        $documents = $project->documents()
+            ->latest()
+            ->paginate(10);
+
         return inertia('project/show', [
             'project' => $project,
+            'documents' => $documents,
         ]);
     }
 }

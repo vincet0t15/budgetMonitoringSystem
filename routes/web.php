@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -17,6 +18,9 @@ Route::middleware(['auth', 'verified',])->group(function () {
     Route::put('projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
     Route::get('projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
     Route::delete('projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+
+    // Document
+    Route::post('documents', [DocumentController::class, 'store'])->name('documents.store');
 });
 
 require __DIR__ . '/settings.php';
