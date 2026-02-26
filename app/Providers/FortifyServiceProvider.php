@@ -50,6 +50,12 @@ class FortifyServiceProvider extends ServiceProvider
             $user = User::where('username', $username)->first();
 
             if ($user && Hash::check($request->password, $user->password)) {
+                if (! $user->is_active) {
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'username' => ['Your account is inactive. Please contact the administrator.'],
+                    ]);
+                }
+
                 return $user;
             }
         });
