@@ -34,9 +34,17 @@ type Project = {
   id: number
   name: string
 }
-export function NavProjects({ projects = [] }: { projects?: Project[] }) {
+
+type SharedProjects = {
+  items: Project[]
+  total: number
+}
+
+export function NavProjects({ projects }: { projects: SharedProjects }) {
   const { isMobile } = useSidebar()
   const [openCreateProject, setOpenCreateProject] = useState(false)
+  const items = projects?.items || []
+  const total = projects?.total || 0
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -48,8 +56,8 @@ export function NavProjects({ projects = [] }: { projects?: Project[] }) {
         />
       </div>
       <SidebarMenu>
-        {projects && projects.length > 0 ? (
-          projects.map((item) => (
+        {items.length > 0 ? (
+          items.map((item) => (
             <SidebarMenuItem key={item.id}>
               <SidebarMenuButton asChild>
                 <Link href={`/projects/${item.id}`}>
@@ -89,15 +97,17 @@ export function NavProjects({ projects = [] }: { projects?: Project[] }) {
         ) : (
           <SidebarMenuItem>
             <SidebarMenuButton disabled>
-              {/* <span className="text-muted-foreground italic">No projects found</span> */}
+              <span className="text-muted-foreground italic">No projects found</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         )}
-        {projects.length > 5 && (
+        {total > 5 && (
           <SidebarMenuItem>
-            <SidebarMenuButton className="text-sidebar-foreground/70">
-              <MoreHorizontal className="text-sidebar-foreground/70" />
-              <span>More</span>
+            <SidebarMenuButton asChild className="text-sidebar-foreground/70">
+              <Link href="/projects">
+                <MoreHorizontal className="text-sidebar-foreground/70" />
+                <span>More</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         )}
