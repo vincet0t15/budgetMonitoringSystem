@@ -16,11 +16,31 @@ class DocumentController extends Controller
             'account_code' => 'nullable|string|max:255',
             'ammount' => 'required|numeric',
             'project_id' => 'required|exists:projects,id',
+            'remarks' => 'nullable|string|max:1000',
         ]);
 
         Document::create($request->all());
 
         return redirect()->back()->with('success', 'Document created successfully.');
+    }
+
+    /**
+     * Update a document
+     */
+    public function update(Request $request, Document $document)
+    {
+        $request->validate([
+            'payee' => 'required|string|max:255 ',
+            'particulars' => 'nullable|string|max:255',
+            'fpp' => 'nullable|string|max:255',
+            'account_code' => 'nullable|string|max:255',
+            'ammount' => 'required|numeric',
+            'remarks' => 'nullable|string|max:1000',
+        ]);
+
+        $document->update($request->all());
+
+        return redirect()->back()->with('success', 'Document updated successfully.');
     }
 
     /**

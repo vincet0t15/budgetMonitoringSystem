@@ -23,6 +23,7 @@ Route::middleware(['auth', 'verified',])->group(function () {
     Route::post('documents', [DocumentController::class, 'store'])->name('documents.store');
     Route::post('documents/{document}/mark-returned', [DocumentController::class, 'markAsReturned'])->name('documents.mark-returned');
     Route::post('documents/{document}/mark-pending', [DocumentController::class, 'markAsPending'])->name('documents.mark-pending');
+    Route::put('documents/{document}', [DocumentController::class, 'update'])->name('documents.update');
     Route::get('documents/filter/{projectId?}', [DocumentController::class, 'filterDocuments'])->name('documents.filter');
 });
 

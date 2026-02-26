@@ -23,6 +23,7 @@ import React, {
     useState,
 } from 'react';
 import CreateDocument from '../documents/create';
+import EditDocument from '../documents/edit';
 import { Label } from '@/components/ui/label';
 import { FilterProps } from '@/types/filter';
 import projects from '@/routes/projects';
@@ -79,9 +80,17 @@ export default function Dashboard({ project, documents, filters }: Props) {
     };
 
     const [openCreateDocument, setOpenCreateDocument] = React.useState(false);
+    const [openEditDocument, setOpenEditDocument] = React.useState(false);
+    const [editingDocument, setEditingDocument] =
+        useState<DocumentProps | null>(null);
 
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setData('search', e.target.value);
+    };
+
+    const handleEdit = (doc: DocumentProps) => {
+        setEditingDocument(doc);
+        setOpenEditDocument(true);
     };
 
     const handleMarkAsReturned = (documentId: number) => {
@@ -224,7 +233,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                             </div>
                                         </TableCell>
                                         <TableCell className="text-center">
-                                            <div className="flex items-center justify-center">
+                                            <div className="flex items-center justify-center gap-2">
                                                 <Label
                                                     className="cursor-pointer text-teal-700 hover:underline"
                                                     onClick={() =>
@@ -241,8 +250,17 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                                         ? 'Mark as not returned'
                                                         : 'Mark as return'}
                                                 </Label>
+                                                <Label
+                                                    className="cursor-pointer text-blue-600 hover:underline"
+                                                    onClick={() =>
+                                                        handleEdit(data)
+                                                    }
+                                                >
+                                                    Edit
+                                                </Label>
                                             </div>
                                         </TableCell>
+                                        <TableCell className="text-center"></TableCell>
                                     </TableRow>
                                 ))
                             ) : (
@@ -267,6 +285,13 @@ export default function Dashboard({ project, documents, filters }: Props) {
                         open={openCreateDocument}
                         setOpen={setOpenCreateDocument}
                         projectId={project.id}
+                    />
+                )}
+                {openEditDocument && editingDocument && (
+                    <EditDocument
+                        open={openEditDocument}
+                        setOpen={setOpenEditDocument}
+                        document={editingDocument}
                     />
                 )}
             </div>
