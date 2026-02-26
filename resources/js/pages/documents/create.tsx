@@ -33,6 +33,7 @@ export default function CreateDocument({ open, setOpen, projectId }: Props) {
             account_code: '',
             ammount: '',
             project_id: projectId,
+            remarks: '',
         });
 
     const submit: SubmitEventHandler = (e) => {
@@ -98,17 +99,6 @@ export default function CreateDocument({ open, setOpen, projectId }: Props) {
                         />
                         <InputError message={errors.particulars} />
                     </div>
-                    <div className="grid gap-2">
-                        <Label>Particulars</Label>
-                        <Textarea
-                            value={data.particulars}
-                            name="particulars"
-                            className="w-full dark:bg-input/30"
-                            placeholder="Particulars"
-                            onChange={handleInputChange}
-                        />
-                        <InputError message={errors.particulars} />
-                    </div>
 
                     <div className="grid gap-4 md:grid-cols-3">
                         <div className="grid gap-2">
@@ -144,6 +134,18 @@ export default function CreateDocument({ open, setOpen, projectId }: Props) {
                             />
                             <InputError message={errors.ammount} />
                         </div>
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label>Remarks</Label>
+                        <Textarea
+                            value={data.remarks}
+                            name="remarks"
+                            className="w-full dark:bg-input/30"
+                            placeholder="Remarks"
+                            onChange={handleInputChange}
+                        />
+                        <InputError message={errors.remarks} />
                     </div>
                     <DialogFooter>
                         <Button

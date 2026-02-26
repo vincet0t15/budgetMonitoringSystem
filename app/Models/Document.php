@@ -20,6 +20,7 @@ class Document extends Model
         'account_code',
         'ammount',
         'project_id',
+        'remarks',
     ];
 
     public function project()
