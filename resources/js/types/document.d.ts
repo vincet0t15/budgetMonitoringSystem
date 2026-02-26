@@ -12,6 +12,7 @@ export interface DocumentProps {
     is_returned: boolean;
     returned_at?: string;
     return_notes?: string;
+    remarks?: string;
 }
 
 export type DocumentTypes = Omit<DocumentProps, 'id','user_id'>;

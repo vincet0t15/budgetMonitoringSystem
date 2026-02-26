@@ -161,6 +161,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                 <TableHead className="">F.P.P</TableHead>
                                 <TableHead className="">Account Code</TableHead>
                                 <TableHead className="">Ammount</TableHead>
+                                <TableHead className="">Remarks</TableHead>
                                 <TableHead className="text-center">
                                     Return
                                 </TableHead>
@@ -195,6 +196,11 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                         </TableCell>
                                         <TableCell className="font-medium">
                                             <Label>{data.ammount}</Label>
+                                        </TableCell>
+                                        <TableCell className="max-w-[250px] overflow-hidden font-medium">
+                                            <Label className="block truncate overflow-hidden whitespace-nowrap">
+                                                {data.remarks || '-'}
+                                            </Label>
                                         </TableCell>
                                         <TableCell className="text-center">
                                             <div className="flex items-center justify-center gap-2">
