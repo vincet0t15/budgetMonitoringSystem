@@ -215,22 +215,24 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                             </div>
                                         </TableCell>
                                         <TableCell className="text-center">
-                                            <Label
-                                                className="cursor-pointer text-teal-700 hover:underline"
-                                                onClick={() =>
-                                                    data.is_returned
-                                                        ? handleMarkAsPending(
-                                                              data.id,
-                                                          )
-                                                        : handleMarkAsReturned(
-                                                              data.id,
-                                                          )
-                                                }
-                                            >
-                                                {data.is_returned
-                                                    ? 'Mark as not returned'
-                                                    : 'Mark as return'}
-                                            </Label>
+                                            <div className="flex items-center justify-center">
+                                                <Label
+                                                    className="cursor-pointer text-teal-700 hover:underline"
+                                                    onClick={() =>
+                                                        data.is_returned
+                                                            ? handleMarkAsPending(
+                                                                  data.id,
+                                                              )
+                                                            : handleMarkAsReturned(
+                                                                  data.id,
+                                                              )
+                                                    }
+                                                >
+                                                    {data.is_returned
+                                                        ? 'Mark as not returned'
+                                                        : 'Mark as return'}
+                                                </Label>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))
