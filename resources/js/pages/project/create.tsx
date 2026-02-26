@@ -18,7 +18,6 @@ import projects from "@/routes/projects"
 import { ProjectType } from "@/types/proejct"
 import { useForm } from "@inertiajs/react"
 import { ChangeEventHandler, SubmitEventHandler } from "react"
-import { toast } from "sonner"
 interface Props {
     open: boolean
     isOpen: (open: boolean) => void
@@ -36,9 +35,9 @@ export function CreateProjectDialog({ open, isOpen }: Props) {
     const submit: SubmitEventHandler = (e) => {
         e.preventDefault()
         post(projects.store().url, {
-            onSuccess: (response: { props: FlashProps }) => {
-                toast.success(response.props.flash?.success)
+            onSuccess: () => {
                 reset()
+                isOpen(false)
             }
         })
     }
