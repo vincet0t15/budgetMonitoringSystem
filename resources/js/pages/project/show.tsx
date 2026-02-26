@@ -58,7 +58,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
             if (data.search) params.search = data.search;
             if (tab && tab !== 'all') params.statusId = tab;
 
-            router.get('document.index', params, {
+            router.get(projects.show(project.id), params, {
                 preserveState: true,
                 preserveScroll: true,
             });
@@ -77,6 +77,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
             preserveScroll: true,
         });
     };
+
     const [openCreateDocument, setOpenCreateDocument] = React.useState(false);
 
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -120,34 +121,35 @@ export default function Dashboard({ project, documents, filters }: Props) {
                         </span>
                     </Button>
 
-                    <div className="flex items-center gap-2">
-                        <Input placeholder="Search..." className="" />
-                    </div>
+                    <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2">
+                            <Tabs
+                                value={tab}
+                                onValueChange={(value) => {
+                                    setTab(value);
+                                    handleTabChange(value);
+                                }}
+                            >
+                                <TabsList>
+                                    {tabs.map((t, index) => (
+                                        <TabsTrigger
+                                            key={index}
+                                            value={t.value}
+                                        >
+                                            {t.label}
+                                        </TabsTrigger>
+                                    ))}
+                                </TabsList>
+                            </Tabs>
 
-                    <div className="flex items-center gap-2">
-                        <Tabs
-                            value={tab}
-                            onValueChange={(value) => {
-                                setTab(value);
-                                handleTabChange(value);
-                            }}
-                        >
-                            <TabsList>
-                                {tabs.map((t, index) => (
-                                    <TabsTrigger key={index} value={t.value}>
-                                        {t.label}
-                                    </TabsTrigger>
-                                ))}
-                            </TabsList>
-                        </Tabs>
-
-                        <Input
-                            onKeyDown={handleKeyDown}
-                            onChange={handleSearchChange}
-                            placeholder="Search..."
-                            name="search"
-                            value={data.search}
-                        />
+                            <Input
+                                onKeyDown={handleKeyDown}
+                                onChange={handleSearchChange}
+                                placeholder="Search..."
+                                name="search"
+                                value={data.search}
+                            />
+                        </div>
                     </div>
                 </div>
 
