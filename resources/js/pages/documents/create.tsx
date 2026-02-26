@@ -15,11 +15,7 @@ import projects from '@/routes/projects';
 import { DocumentTypes } from '@/types/document';
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import {
-    ChangeEventHandler,
-    FormEventHandler,
-    SubmitEventHandler,
-} from 'react';
+import { ChangeEventHandler, SubmitEventHandler } from 'react';
 import { toast } from 'sonner';
 
 interface Props {
