@@ -23,6 +23,7 @@ Route::middleware(['auth', 'verified',])->group(function () {
     Route::post('documents', [DocumentController::class, 'store'])->name('documents.store');
     Route::post('documents/{document}/mark-returned', [DocumentController::class, 'markAsReturned'])->name('documents.mark-returned');
     Route::post('documents/{document}/mark-pending', [DocumentController::class, 'markAsPending'])->name('documents.mark-pending');
+    Route::get('documents/filter/{projectId?}', [DocumentController::class, 'filterDocuments'])->name('documents.filter');
 });
 
 require __DIR__ . '/settings.php';

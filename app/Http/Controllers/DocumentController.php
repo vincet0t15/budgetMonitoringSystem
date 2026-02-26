@@ -78,4 +78,48 @@ class DocumentController extends Controller
 
         return view('documents.returned', compact('returnedDocuments', 'projectId'));
     }
+
+    /**
+     * Filter documents by status and search criteria
+     */
+    public function filterDocuments(Request $request, $projectId = null)
+    {
+        $query = Document::query();
+
+        // Filter by project if provided
+        if ($projectId) {
+            $query->where('project_id', $projectId);
+        }
+
+        // Filter by return status
+        $status = $request->query('status');
+        if ($status === 'returned') {
+            $query->returned();
+        } elseif ($status === 'pending') {
+            $query->pending();
+        }
+
+        // Apply search filter if provided
+        $search = $request->query('search');
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('serial_no', 'like', "%{$search}%")
+                    ->orWhere('payee', 'like', "%{$search}%")
+                    ->orWhere('particulars', 'like', "%{$search}%")
+                    ->orWhere('remarks', 'like', "%{$search}%");
+            });
+        }
+
+        $documents = $query->latest('date_created')->paginate(15);
+
+        return response()->json([
+            'data' => $documents->items(),
+            'pagination' => [
+                'total' => $documents->total(),
+                'per_page' => $documents->perPage(),
+                'current_page' => $documents->currentPage(),
+                'last_page' => $documents->lastPage(),
+            ],
+        ]);
+    }
 }

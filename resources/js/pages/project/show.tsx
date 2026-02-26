@@ -25,6 +25,7 @@ import React, {
 import CreateDocument from '../documents/create';
 import { Label } from '@/components/ui/label';
 import { FilterProps } from '@/types/filter';
+import projects from '@/routes/projects';
 
 interface Props {
     project: ProjectProps;
@@ -71,7 +72,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
             params.statusId = value;
         }
 
-        router.get('document.index', params, {
+        router.get(projects.show(project.id), params, {
             preserveState: true,
             preserveScroll: true,
         });
