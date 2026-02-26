@@ -89,7 +89,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
 
     const toggleSelect = (id: number) => {
         setSelectedIds((prev) =>
-            prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+            prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
         );
     };
 
@@ -112,42 +112,28 @@ export default function Dashboard({ project, documents, filters }: Props) {
 
     const handleBulkReturn = () => {
         if (selectedIds.length === 0) return;
-        router.post('/documents/bulk-return', { ids: selectedIds }, {
-            preserveState: true,
-            preserveScroll: true,
-        });
+        router.post(
+            '/documents/bulk-return',
+            { ids: selectedIds },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
         setSelectedIds([]);
     };
 
     const handleBulkPending = () => {
         if (selectedIds.length === 0) return;
-        router.post('/documents/bulk-pending', { ids: selectedIds }, {
-            preserveState: true,
-            preserveScroll: true,
-        });
+        router.post(
+            '/documents/bulk-pending',
+            { ids: selectedIds },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
         setSelectedIds([]);
-    };
-
-    const handleMarkAsReturned = (documentId: number) => {
-        router.post(
-            `/documents/${documentId}/mark-returned`,
-            {},
-            {
-                preserveState: true,
-                preserveScroll: true,
-            },
-        );
-    };
-
-    const handleMarkAsPending = (documentId: number) => {
-        router.post(
-            `/documents/${documentId}/mark-pending`,
-            {},
-            {
-                preserveState: true,
-                preserveScroll: true,
-            },
-        );
     };
 
     return (
@@ -155,15 +141,37 @@ export default function Dashboard({ project, documents, filters }: Props) {
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <Button
-                        className="cursor-pointer rounded-sm"
-                        onClick={() => setOpenCreateDocument(true)}
-                    >
-                        <PlusIcon />
-                        <span className="rounded-sm lg:inline">
-                            Register Document
-                        </span>
-                    </Button>
+                    <div className="flex gap-2">
+                        <Button
+                            className="cursor-pointer rounded-sm"
+                            onClick={() => setOpenCreateDocument(true)}
+                        >
+                            <PlusIcon />
+                            <span className="rounded-sm lg:inline">
+                                Register Document
+                            </span>
+                        </Button>
+                        {selectedIds.length > 0 && (
+                            <div className="flex gap-2">
+                                <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="text-teal-600 hover:text-teal-700"
+                                    onClick={handleBulkReturn}
+                                >
+                                    Mark selected as returned
+                                </Button>
+                                <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={handleBulkPending}
+                                    className="text-orange-600 hover:text-orange-700"
+                                >
+                                    Mark selected as not returned
+                                </Button>
+                            </div>
+                        )}
+                    </div>
 
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-2">
@@ -195,24 +203,6 @@ export default function Dashboard({ project, documents, filters }: Props) {
                             />
                         </div>
                     </div>
-                    {selectedIds.length > 0 && (
-                        <div className="flex gap-2 mt-2">
-                            <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={handleBulkReturn}
-                            >
-                                Mark selected as returned
-                            </Button>
-                            <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={handleBulkPending}
-                            >
-                                Mark selected as not returned
-                            </Button>
-                        </div>
-                    )}
                 </div>
 
                 <div className="w-full overflow-hidden rounded-sm border shadow-sm">
@@ -222,7 +212,8 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                 <TableHead className="w-5">
                                     <Checkbox
                                         checked={
-                                            selectedIds.length === documents.data.length &&
+                                            selectedIds.length ===
+                                                documents.data.length &&
                                             documents.data.length > 0
                                         }
                                         onCheckedChange={toggleSelectAll}
@@ -250,11 +241,15 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                     <TableRow key={index}>
                                         <TableCell className="w-5">
                                             <Checkbox
-                                                checked={selectedIds.includes(data.id)}
-                                                onCheckedChange={() => toggleSelect(data.id)}
+                                                checked={selectedIds.includes(
+                                                    data.id,
+                                                )}
+                                                onCheckedChange={() =>
+                                                    toggleSelect(data.id)
+                                                }
                                             />
                                         </TableCell>
-                                        <TableCell className="font-medium w-5">
+                                        <TableCell className="w-5 font-medium">
                                             {index + 1}
                                         </TableCell>
                                         <TableCell className="font-medium">
@@ -303,22 +298,6 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                         <TableCell className="text-center">
                                             <div className="flex items-center justify-center gap-2">
                                                 <Label
-                                                    className="cursor-pointer text-teal-700 hover:underline"
-                                                    onClick={() =>
-                                                        data.is_returned
-                                                            ? handleMarkAsPending(
-                                                                  data.id,
-                                                              )
-                                                            : handleMarkAsReturned(
-                                                                  data.id,
-                                                              )
-                                                    }
-                                                >
-                                                    {data.is_returned
-                                                        ? 'Mark as not returned'
-                                                        : 'Mark as return'}
-                                                </Label>
-                                                <Label
                                                     className="cursor-pointer text-blue-600 hover:underline"
                                                     onClick={() =>
                                                         handleEdit(data)
@@ -328,7 +307,6 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                                 </Label>
                                             </div>
                                         </TableCell>
-                                        <TableCell className="text-center"></TableCell>
                                     </TableRow>
                                 ))
                             ) : (
