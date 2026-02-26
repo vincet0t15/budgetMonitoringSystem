@@ -26,10 +26,11 @@ class ProjectController extends Controller
         return redirect()->back()->with('success', 'Project created successfully.');
     }
 
-    public function show(Project $project)
+    public function show(Request $request, Project $project)
     {
         abort_if($project->user_id !== Auth::id(), 403);
 
+        $search = $request->query('search');
         $documents = $project->documents()
             ->latest()
             ->paginate(10);
@@ -37,6 +38,9 @@ class ProjectController extends Controller
         return inertia('project/show', [
             'project' => $project,
             'documents' => $documents,
+            'filters' => [
+                'search' => $search,
+            ],
         ]);
     }
 }
