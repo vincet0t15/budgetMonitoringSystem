@@ -119,6 +119,27 @@ export default function Dashboard({ project, documents, filters }: Props) {
         setOpenViewDocument(true);
     };
 
+    const isDocumentReturned = (doc: DocumentProps): boolean => {
+        return (
+            !!doc.received_back_documents &&
+            doc.received_back_documents.length > 0 &&
+            !doc.received_back_documents[doc.received_back_documents.length - 1]
+                .deleted_at
+        );
+    };
+
+    const getReturnDate = (doc: DocumentProps): string | null => {
+        if (
+            !doc.received_back_documents ||
+            doc.received_back_documents.length === 0
+        ) {
+            return null;
+        }
+        const latestReturn =
+            doc.received_back_documents[doc.received_back_documents.length - 1];
+        return latestReturn.deleted_at ? null : latestReturn.date_recieved;
+    };
+
     const handleBulkReturn = () => {
         if (selectedIds.length === 0) return;
         router.post(
@@ -221,9 +242,9 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                 <TableHead className="w-5">
                                     <Checkbox
                                         checked={
+                                            selectedIds.length > 0 &&
                                             selectedIds.length ===
-                                                documents.data.length &&
-                                            documents.data.length > 0
+                                                documents.data.length
                                         }
                                         onCheckedChange={toggleSelectAll}
                                     />
@@ -293,13 +314,15 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                         </TableCell>
                                         <TableCell className="text-center">
                                             <div className="flex items-center justify-center gap-2">
-                                                {data.is_returned ? (
+                                                {isDocumentReturned(data) ? (
                                                     <div className="flex items-center gap-1">
                                                         <CheckCircle2 className="h-5 w-5 text-green-600" />
                                                         <span className="text-xs text-gray-500">
-                                                            {data.returned_at
+                                                            {getReturnDate(data)
                                                                 ? new Date(
-                                                                      data.returned_at,
+                                                                      getReturnDate(
+                                                                          data,
+                                                                      ) || '',
                                                                   ).toLocaleDateString()
                                                                 : ''}
                                                         </span>
@@ -309,6 +332,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                                 )}
                                             </div>
                                         </TableCell>
+
                                         <TableCell className="text-center">
                                             <div className="flex items-center justify-center gap-2">
                                                 <Label

@@ -33,7 +33,7 @@ class ProjectController extends Controller
         $search = $request->query('search');
         $statusId = $request->query('statusId');
 
-        $query = $project->documents();
+        $query = $project->documents()->with('receivedBackDocuments');
 
         // Filter by return status
         if ($statusId === 'return') {

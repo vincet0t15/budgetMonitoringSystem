@@ -52,11 +52,11 @@ class DocumentController extends Controller
             'ids.*' => 'exists:documents,id',
         ]);
 
-        Document::whereIn('id', $request->input('ids'))
-            ->update([
-                'is_returned' => true,
-                'returned_at' => now('singapore'),
-            ]);
+        $documents = Document::whereIn('id', $request->input('ids'))->get();
+
+        foreach ($documents as $document) {
+            $document->markAsReturned();
+        }
 
         return redirect()->back()->with('success', 'Selected documents marked as returned.');
     }
@@ -71,11 +71,11 @@ class DocumentController extends Controller
             'ids.*' => 'exists:documents,id',
         ]);
 
-        Document::whereIn('id', $request->input('ids'))
-            ->update([
-                'is_returned' => false,
-                'returned_at' => null,
-            ]);
+        $documents = Document::whereIn('id', $request->input('ids'))->get();
+
+        foreach ($documents as $document) {
+            $document->markAsNotReturned();
+        }
 
         return redirect()->back()->with('success', 'Selected documents marked as pending.');
     }
@@ -84,11 +84,7 @@ class DocumentController extends Controller
      */
     public function markAsReturned(Request $request, Document $document)
     {
-        $request->validate([
-            'return_notes' => 'nullable|string|max:1000',
-        ]);
-
-        $document->markAsReturned($request->input('return_notes'));
+        $document->markAsReturned();
 
         return redirect()->back()->with('success', 'Document marked as returned to office.');
     }

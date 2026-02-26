@@ -21,9 +21,6 @@ class Document extends Model
         'ammount',
         'project_id',
         'remarks',
-        'is_returned',
-        'returned_at',
-        'return_notes',
     ];
 
     public function project()
@@ -31,31 +28,40 @@ class Document extends Model
         return $this->belongsTo(Project::class);
     }
 
-    /**
-     * Mark document as returned to office
-     *
-     * @param string|null $notes Optional notes about the return
-     * @return bool
-     */
-    public function markAsReturned(?string $notes = null): bool
+    public function receivedBackDocuments()
     {
-        $this->is_returned = true;
-        $this->returned_at = Carbon::now('singapore')->toDateTimeString();
-        $this->return_notes = $notes;
-        return $this->save();
+        return $this->hasMany(ReceivedBackDocument::class);
     }
 
     /**
-     * Mark document as not returned
+     * Mark document as returned to office
+     *
+     * @return ReceivedBackDocument
+     */
+    public function markAsReturned(): ReceivedBackDocument
+    {
+        return $this->receivedBackDocuments()->create([
+            'received_by' => Auth::id(),
+            'date_recieved' => now('singapore'),
+        ]);
+    }
+
+    /**
+     * Mark document as not returned (undo last return)
      *
      * @return bool
      */
     public function markAsNotReturned(): bool
     {
-        $this->is_returned = false;
-        $this->returned_at = null;
-        $this->return_notes = null;
-        return $this->save();
+        $latestReturn = $this->receivedBackDocuments()
+            ->latest('date_recieved')
+            ->first();
+
+        if ($latestReturn) {
+            return $latestReturn->delete();
+        }
+
+        return false;
     }
 
     /**
@@ -65,7 +71,20 @@ class Document extends Model
      */
     public function hasReturned(): bool
     {
-        return $this->is_returned === true || $this->is_returned === 1;
+        return $this->receivedBackDocuments()
+            ->whereNull('deleted_at')
+            ->exists();
+    }
+
+    /**
+     * Get the latest return record
+     */
+    public function getLatestReturn()
+    {
+        return $this->receivedBackDocuments()
+            ->whereNull('deleted_at')
+            ->latest('date_recieved')
+            ->first();
     }
 
     /**
@@ -73,7 +92,9 @@ class Document extends Model
      */
     public function scopeReturned($query)
     {
-        return $query->where('is_returned', true);
+        return $query->whereHas('receivedBackDocuments', function ($q) {
+            $q->whereNull('deleted_at');
+        });
     }
 
     /**
@@ -81,7 +102,9 @@ class Document extends Model
      */
     public function scopePending($query)
     {
-        return $query->where('is_returned', false);
+        return $query->whereDoesntHave('receivedBackDocuments', function ($q) {
+            $q->whereNull('deleted_at');
+        });
     }
 
     public static function boot()

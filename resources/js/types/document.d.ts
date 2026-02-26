@@ -1,3 +1,13 @@
+export interface ReceivedBackDocument {
+    id: number;
+    document_id: number;
+    received_by: number;
+    date_recieved: string;
+    deleted_at?: string;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface DocumentProps {
     id: number;
     date_created: string;
@@ -9,10 +19,8 @@ export interface DocumentProps {
     ammount: string;
     project_id: number;
     user_id: number;
-    is_returned: boolean;
-    returned_at?: string;
-    return_notes?: string;
     remarks?: string;
+    received_back_documents?: ReceivedBackDocument[];
 }
 
-export type DocumentTypes = Omit<DocumentProps, 'id','user_id'>;
+export type DocumentTypes = Omit<DocumentProps, 'id','user_id','received_back_documents'>;

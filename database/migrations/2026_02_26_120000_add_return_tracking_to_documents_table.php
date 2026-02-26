@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('documents', function (Blueprint $table) {
-            $table->boolean('is_returned')->default(false)->after('remarks');
-            $table->dateTime('returned_at')->nullable()->after('is_returned');
-            $table->text('return_notes')->nullable()->after('returned_at');
+        Schema::create('received_back_documents', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('document_id')->constrained('documents')->cascadeOnDelete();
+            $table->foreignId('received_by')->constrained('users')->cascadeOnDelete();
+            $table->dateTime('date_recieved');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -23,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('documents', function (Blueprint $table) {
-            $table->dropColumn(['is_returned', 'returned_at', 'return_notes']);
-        });
+        Schema::dropIfExists('received_back_documents');
     }
 };

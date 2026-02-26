@@ -89,51 +89,56 @@ export default function ViewDocument({ open, setOpen, document }: Props) {
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-4 border-t pt-4">
+                        <div className="grid grid-cols-2 gap-4 border-t pt-4">
                             <div>
                                 <Label className="text-xs text-gray-500 uppercase">
                                     Status
                                 </Label>
                                 <p className="font-medium">
-                                    {document.is_returned
+                                    {document.received_back_documents &&
+                                    document.received_back_documents.length >
+                                        0 &&
+                                    !document.received_back_documents[
+                                        document.received_back_documents
+                                            .length - 1
+                                    ].deleted_at
                                         ? 'Returned'
                                         : 'Pending'}
                                 </p>
                             </div>
-                            {document.returned_at && (
-                                <div>
-                                    <Label className="text-xs text-gray-500 uppercase">
-                                        Returned Date
-                                    </Label>
-                                    <p className="font-medium">
-                                        {new Date(
-                                            document.returned_at,
-                                        ).toLocaleDateString()}
-                                    </p>
-                                </div>
-                            )}
-                            <div>
-                                <Label className="text-xs text-gray-500 uppercase">
-                                    Date Created
-                                </Label>
-                                <p className="font-medium">
-                                    {new Date(
-                                        document.date_created,
-                                    ).toLocaleDateString()}
-                                </p>
-                            </div>
+                            {document.received_back_documents &&
+                                document.received_back_documents.length > 0 &&
+                                !document.received_back_documents[
+                                    document.received_back_documents.length - 1
+                                ].deleted_at && (
+                                    <div>
+                                        <Label className="text-xs text-gray-500 uppercase">
+                                            Returned Date
+                                        </Label>
+                                        <p className="font-medium">
+                                            {new Date(
+                                                document
+                                                    .received_back_documents[
+                                                    document
+                                                        .received_back_documents
+                                                        .length - 1
+                                                ].date_recieved,
+                                            ).toLocaleDateString()}
+                                        </p>
+                                    </div>
+                                )}
                         </div>
 
-                        {document.return_notes && (
-                            <div>
-                                <Label className="text-xs text-gray-500 uppercase">
-                                    Return Notes
-                                </Label>
-                                <p className="font-medium break-words">
-                                    {document.return_notes}
-                                </p>
-                            </div>
-                        )}
+                        <div>
+                            <Label className="text-xs text-gray-500 uppercase">
+                                Date Created
+                            </Label>
+                            <p className="font-medium">
+                                {new Date(
+                                    document.date_created,
+                                ).toLocaleDateString()}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </DialogContent>
