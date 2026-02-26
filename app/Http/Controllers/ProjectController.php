@@ -31,15 +31,34 @@ class ProjectController extends Controller
         abort_if($project->user_id !== Auth::id(), 403);
 
         $search = $request->query('search');
-        $documents = $project->documents()
-            ->latest()
-            ->paginate(10);
+        $statusId = $request->query('statusId');
+
+        $query = $project->documents();
+
+        // Filter by return status
+        if ($statusId === 'return') {
+            $query->returned();
+        } elseif ($statusId === 'not_return') {
+            $query->pending();
+        }
+
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('serial_no', 'like', "%{$search}%")
+                    ->orWhere('payee', 'like', "%{$search}%")
+                    ->orWhere('particulars', 'like', "%{$search}%");
+            });
+        }
+
+        $documents = $query->latest('date_created')->paginate(10);
 
         return inertia('project/show', [
             'project' => $project,
             'documents' => $documents,
             'filters' => [
                 'search' => $search,
+                'statusId' => $statusId,
             ],
         ]);
     }

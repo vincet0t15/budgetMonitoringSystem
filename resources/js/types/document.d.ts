@@ -9,6 +9,9 @@ export interface DocumentProps {
     ammount: string;
     project_id: number;
     user_id: number;
+    is_returned: boolean;
+    returned_at?: string;
+    return_notes?: string;
 }
 
 export type DocumentTypes = Omit<DocumentProps, 'id','user_id'>;

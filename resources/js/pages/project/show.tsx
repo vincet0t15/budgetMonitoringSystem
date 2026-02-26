@@ -15,7 +15,7 @@ import { DocumentProps } from '@/types/document';
 import { PaginatedDataResponse } from '@/types/pagination';
 import Pagination from '@/components/paginationData';
 import { Head, router, useForm } from '@inertiajs/react';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, CheckCircle2, Circle, RotateCcw } from 'lucide-react';
 import { ProjectProps } from '@/types/proejct';
 import React, {
     ChangeEventHandler,
@@ -80,6 +80,28 @@ export default function Dashboard({ project, documents, filters }: Props) {
 
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setData('search', e.target.value);
+    };
+
+    const handleMarkAsReturned = (documentId: number) => {
+        router.post(
+            `/documents/${documentId}/mark-returned`,
+            {},
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
+    };
+
+    const handleMarkAsPending = (documentId: number) => {
+        router.post(
+            `/documents/${documentId}/mark-pending`,
+            {},
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
     };
 
     return (
@@ -173,6 +195,42 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                         </TableCell>
                                         <TableCell className="font-medium">
                                             <Label>{data.ammount}</Label>
+                                        </TableCell>
+                                        <TableCell className="text-center">
+                                            <div className="flex items-center justify-center gap-2">
+                                                {data.is_returned ? (
+                                                    <div className="flex items-center gap-1">
+                                                        <CheckCircle2 className="h-5 w-5 text-green-600" />
+                                                        <span className="text-xs text-gray-500">
+                                                            {data.returned_at
+                                                                ? new Date(
+                                                                      data.returned_at,
+                                                                  ).toLocaleDateString()
+                                                                : ''}
+                                                        </span>
+                                                    </div>
+                                                ) : (
+                                                    <Circle className="h-5 w-5 text-gray-400" />
+                                                )}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="text-center">
+                                            <Label
+                                                className="cursor-pointer text-teal-700 hover:underline"
+                                                onClick={() =>
+                                                    data.is_returned
+                                                        ? handleMarkAsPending(
+                                                              data.id,
+                                                          )
+                                                        : handleMarkAsReturned(
+                                                              data.id,
+                                                          )
+                                                }
+                                            >
+                                                {data.is_returned
+                                                    ? 'Mark as not returned'
+                                                    : 'Mark as return'}
+                                            </Label>
                                         </TableCell>
                                     </TableRow>
                                 ))

@@ -22,4 +22,60 @@ class DocumentController extends Controller
 
         return redirect()->back()->with('success', 'Document created successfully.');
     }
+
+    /**
+     * Mark a document as returned to office
+     */
+    public function markAsReturned(Request $request, Document $document)
+    {
+        $request->validate([
+            'return_notes' => 'nullable|string|max:1000',
+        ]);
+
+        $document->markAsReturned($request->input('return_notes'));
+
+        return redirect()->back()->with('success', 'Document marked as returned to office.');
+    }
+
+    /**
+     * Mark a document as not returned (pending)
+     */
+    public function markAsPending(Request $request, Document $document)
+    {
+        $document->markAsNotReturned();
+
+        return redirect()->back()->with('success', 'Document marked as pending return.');
+    }
+
+    /**
+     * Get all pending documents (not yet returned)
+     */
+    public function pendingDocuments($projectId = null)
+    {
+        $query = Document::pending();
+
+        if ($projectId) {
+            $query->where('project_id', $projectId);
+        }
+
+        $pendingDocuments = $query->latest('date_created')->paginate(15);
+
+        return view('documents.pending', compact('pendingDocuments', 'projectId'));
+    }
+
+    /**
+     * Get all returned documents
+     */
+    public function returnedDocuments($projectId = null)
+    {
+        $query = Document::returned();
+
+        if ($projectId) {
+            $query->where('project_id', $projectId);
+        }
+
+        $returnedDocuments = $query->latest('returned_at')->paginate(15);
+
+        return view('documents.returned', compact('returnedDocuments', 'projectId'));
+    }
 }

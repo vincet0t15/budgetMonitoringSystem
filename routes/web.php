@@ -21,6 +21,8 @@ Route::middleware(['auth', 'verified',])->group(function () {
 
     // Document
     Route::post('documents', [DocumentController::class, 'store'])->name('documents.store');
+    Route::post('documents/{document}/mark-returned', [DocumentController::class, 'markAsReturned'])->name('documents.mark-returned');
+    Route::post('documents/{document}/mark-pending', [DocumentController::class, 'markAsPending'])->name('documents.mark-pending');
 });
 
 require __DIR__ . '/settings.php';
