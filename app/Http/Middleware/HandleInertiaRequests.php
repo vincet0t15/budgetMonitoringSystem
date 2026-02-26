@@ -41,14 +41,10 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 'user' => $request->user(),
-                'projects' => $request->user() ? $request->user()->projects()->latest()->get() : [],
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'sharedProjects' => $request->user()
-                ? Project::where('user_id', $request->user()->id)
-                ->latest()
-                ->limit(5)
-                ->get(['id', 'name'])
+                ? $request->user()->projects()->latest()->limit(6)->get(['id', 'name'])
                 : [],
             'flash' => [
                 'success' => fn() => $request->session()->get('success'),

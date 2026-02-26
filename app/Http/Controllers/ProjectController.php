@@ -23,4 +23,11 @@ class ProjectController extends Controller
 
         return redirect()->back()->with('success', 'Project created successfully.');
     }
+
+    public function show(Project $project)
+    {
+        return inertia('project/show', [
+            'project' => $project,
+        ]);
+    }
 }

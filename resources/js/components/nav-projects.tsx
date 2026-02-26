@@ -89,16 +89,18 @@ export function NavProjects({ projects = [] }: { projects?: Project[] }) {
         ) : (
           <SidebarMenuItem>
             <SidebarMenuButton disabled>
-              <span className="text-muted-foreground italic">No projects found</span>
+              {/* <span className="text-muted-foreground italic">No projects found</span> */}
             </SidebarMenuButton>
           </SidebarMenuItem>
         )}
-        <SidebarMenuItem>
-          <SidebarMenuButton className="text-sidebar-foreground/70">
-            <MoreHorizontal className="text-sidebar-foreground/70" />
-            <span>More</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
+        {projects.length > 5 && (
+          <SidebarMenuItem>
+            <SidebarMenuButton className="text-sidebar-foreground/70">
+              <MoreHorizontal className="text-sidebar-foreground/70" />
+              <span>More</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        )}
       </SidebarMenu>
       {openCreateProject && (
         <CreateProjectDialog open={openCreateProject} isOpen={setOpenCreateProject} />
