@@ -35,14 +35,14 @@ class ProjectController extends Controller
 
         $query = $project->documents()->with('receivedBackDocuments');
 
-        // Filter by return status
+
         if ($statusId === 'return') {
             $query->returned();
         } elseif ($statusId === 'not_return') {
             $query->pending();
         }
 
-        // Apply search filter if provided
+
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('serial_no', 'like', "%{$search}%")
@@ -52,7 +52,7 @@ class ProjectController extends Controller
             });
         }
 
-        $documents = $query->latest('date_created')->paginate(10);
+        $documents = $query->latest('date_created')->paginate(50);
 
         return inertia('project/show', [
             'project' => $project,
