@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,9 @@ Route::inertia('/', 'welcome', [
 
 Route::middleware(['auth', 'verified',])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
+
+    // Auth
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
     // project
     Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
