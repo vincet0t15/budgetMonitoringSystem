@@ -30,6 +30,9 @@ import {
 import { useState } from 'react';
 import { CreateProjectDialog } from '@/pages/project/create';
 import { Link, usePage } from '@inertiajs/react';
+import { ProjectProps } from '@/types/project';
+import { EditProjectDialog } from '@/pages/project/edit';
+import DeleteProject from '@/pages/project/delete';
 
 type Project = {
     id: number;
@@ -45,9 +48,23 @@ export function NavProjects({ projects }: { projects: SharedProjects }) {
     const { isMobile } = useSidebar();
     const { url } = usePage();
     const [openCreateProject, setOpenCreateProject] = useState(false);
+    const [openEditProject, setOpenEditProject] = useState(false);
+    const [openDeleteProject, setOpenDeleteProject] = useState(false);
+    const [selectedProject, setSelectedProject] = useState<ProjectProps | null>(
+        null,
+    );
     const items = projects?.items || [];
     const total = projects?.total || 0;
 
+    const handleClickEdit = (project: ProjectProps) => {
+        setSelectedProject(project);
+        setOpenEditProject(true);
+    };
+
+    const handleClickDelete = (project: ProjectProps) => {
+        setSelectedProject(project);
+        setOpenDeleteProject(true);
+    };
     return (
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
             <div className="flex items-center justify-between px-2">
@@ -88,12 +105,20 @@ export function NavProjects({ projects }: { projects: SharedProjects }) {
                                             <Folder className="text-muted-foreground" />
                                             <span>View Project</span>
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem>
+                                        <DropdownMenuItem
+                                            onClick={() =>
+                                                handleClickEdit(item)
+                                            }
+                                        >
                                             <PenLineIcon className="text-muted-foreground" />
                                             <span>Edit</span>
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem>
+                                        <DropdownMenuItem
+                                            onClick={() =>
+                                                handleClickDelete(item)
+                                            }
+                                        >
                                             <Trash2 className="text-muted-foreground" />
                                             <span>Delete Project</span>
                                         </DropdownMenuItem>
@@ -130,6 +155,22 @@ export function NavProjects({ projects }: { projects: SharedProjects }) {
                 <CreateProjectDialog
                     open={openCreateProject}
                     isOpen={setOpenCreateProject}
+                />
+            )}
+
+            {openEditProject && selectedProject && (
+                <EditProjectDialog
+                    open={openEditProject}
+                    isOpen={setOpenEditProject}
+                    project={selectedProject}
+                />
+            )}
+
+            {openDeleteProject && selectedProject && (
+                <DeleteProject
+                    open={openDeleteProject}
+                    setOpen={setOpenDeleteProject}
+                    project={selectedProject}
                 />
             )}
         </SidebarGroup>

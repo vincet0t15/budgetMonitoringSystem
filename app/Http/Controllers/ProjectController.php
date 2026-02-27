@@ -63,4 +63,28 @@ class ProjectController extends Controller
             ],
         ]);
     }
+
+    public function update(Request $request, Project $project)
+    {
+        abort_if($project->user_id !== Auth::id(), 403);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+        ]);
+
+        $project->update($request->all());
+
+        return redirect()->back()->with('success', 'Project updated successfully.');
+    }
+
+    public function destroy(Project $project)
+    {
+        abort_if($project->user_id !== Auth::id(), 403);
+
+        $project->delete();
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Project deleted successfully.');
+    }
 }

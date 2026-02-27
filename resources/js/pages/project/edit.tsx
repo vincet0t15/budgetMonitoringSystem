@@ -3,7 +3,6 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -15,18 +14,19 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import projects from '@/routes/projects';
-import { ProjectType } from '@/types/project';
+import { ProjectProps, ProjectType } from '@/types/project';
 import { useForm } from '@inertiajs/react';
 import { ChangeEventHandler, SubmitEventHandler } from 'react';
 interface Props {
     open: boolean;
     isOpen: (open: boolean) => void;
+    project: ProjectProps;
 }
-export function CreateProjectDialog({ open, isOpen }: Props) {
-    const { data, setData, errors, processing, reset, post } =
+export function EditProjectDialog({ open, isOpen, project }: Props) {
+    const { data, setData, errors, processing, reset, put } =
         useForm<ProjectType>({
-            name: '',
-            description: '',
+            name: project.name || '',
+            description: project.description || '',
         });
 
     const handleInputChange: ChangeEventHandler<
@@ -37,7 +37,7 @@ export function CreateProjectDialog({ open, isOpen }: Props) {
 
     const submit: SubmitEventHandler = (e) => {
         e.preventDefault();
-        post(projects.store().url, {
+        put(projects.update(project.id).url, {
             onSuccess: () => {
                 reset();
                 isOpen(false);
@@ -62,6 +62,7 @@ export function CreateProjectDialog({ open, isOpen }: Props) {
                                 name="name"
                                 defaultValue={data.name}
                                 onChange={handleInputChange}
+                                value={data.name}
                             />
                             <InputError message={errors.name} />
                         </div>
@@ -72,6 +73,7 @@ export function CreateProjectDialog({ open, isOpen }: Props) {
                                 name="description"
                                 defaultValue={data.description}
                                 onChange={handleInputChange}
+                                value={data.description}
                             />
                             <InputError message={errors.description} />
                         </div>

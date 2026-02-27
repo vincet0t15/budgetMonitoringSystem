@@ -17,7 +17,7 @@ import { PaginatedDataResponse } from '@/types/pagination';
 import Pagination from '@/components/paginationData';
 import { Head, router, useForm } from '@inertiajs/react';
 import { PlusIcon, CheckCircle2, Circle, RotateCcw } from 'lucide-react';
-import { ProjectProps } from '@/types/proejct';
+import { ProjectProps } from '@/types/project';
 import React, {
     ChangeEventHandler,
     KeyboardEventHandler,
