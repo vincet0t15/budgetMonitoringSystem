@@ -47,10 +47,43 @@ export default function CreateDocument({ open, setOpen, projectId }: Props) {
         });
     };
 
+    // const handleInputChange: ChangeEventHandler<
+    //     HTMLInputElement | HTMLTextAreaElement
+    // > = (e) => {
+    //     setData({ ...data, [e.target.name]: e.target.value });
+    // };
+
     const handleInputChange: ChangeEventHandler<
         HTMLInputElement | HTMLTextAreaElement
     > = (e) => {
-        setData({ ...data, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+
+        if (name === 'ammount') {
+            // Remove all commas first
+            let numericValue = value.replace(/,/g, '');
+
+            // Allow digits and one decimal point
+            if (!/^\d*\.?\d*$/.test(numericValue)) return;
+
+            // Split integer and decimal part
+            const [integerPart, decimalPart] = numericValue.split('.');
+
+            // Format integer part with commas
+            const formattedInteger = integerPart.replace(
+                /\B(?=(\d{3})+(?!\d))/g,
+                ',',
+            );
+
+            // Recombine with decimal if exists
+            const formattedValue =
+                decimalPart !== undefined
+                    ? `${formattedInteger}.${decimalPart}`
+                    : formattedInteger;
+
+            setData({ ...data, [name]: formattedValue });
+        } else {
+            setData({ ...data, [name]: value });
+        }
     };
 
     return (
@@ -126,6 +159,7 @@ export default function CreateDocument({ open, setOpen, projectId }: Props) {
                         <div className="grid gap-2">
                             <Label>Amount</Label>
                             <Input
+                                type="text"
                                 value={data.ammount}
                                 name="ammount"
                                 className="w-full dark:bg-input/30"

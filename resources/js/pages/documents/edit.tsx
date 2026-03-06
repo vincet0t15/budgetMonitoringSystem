@@ -54,12 +54,17 @@ export default function EditDocument({ open, setOpen, document }: Props) {
 
     const submit: SubmitEventHandler = (e) => {
         e.preventDefault();
-        if (!document) return;
 
-        put(`/documents/${document.id}`, {
-            onSuccess: (response: { props: FlashProps }) => {
-                toast.success(response.props.flash?.success);
-                reset();
+        // Prepare payload
+        const payload = {
+            ...data,
+            ammount: Number(data.ammount.replace(/,/g, '')), // remove commas
+        };
+
+        put(documents.update(Number(document?.id)).url, {
+            ...payload,
+            onSuccess: () => {
+                toast.success('Document updated successfully');
                 setOpen(false);
             },
         });
@@ -68,7 +73,29 @@ export default function EditDocument({ open, setOpen, document }: Props) {
     const handleInputChange: ChangeEventHandler<
         HTMLInputElement | HTMLTextAreaElement
     > = (e) => {
-        setData({ ...data, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+
+        if (name === 'ammount') {
+            let numericValue = value.replace(/,/g, '');
+
+            if (!/^\d*\.?\d*$/.test(numericValue)) return;
+
+            const [integerPart, decimalPart] = numericValue.split('.');
+
+            const formattedInteger = integerPart.replace(
+                /\B(?=(\d{3})+(?!\d))/g,
+                ',',
+            );
+
+            const formattedValue =
+                decimalPart !== undefined
+                    ? `${formattedInteger}.${decimalPart}`
+                    : formattedInteger;
+
+            setData({ ...data, [name]: formattedValue });
+        } else {
+            setData({ ...data, [name]: value });
+        }
     };
 
     return (

@@ -302,7 +302,15 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                             <Label>{data.account_code}</Label>
                                         </TableCell>
                                         <TableCell className="font-medium">
-                                            <Label>{data.ammount}</Label>
+                                            <Label>
+                                                {' '}
+                                                {Number(
+                                                    data.ammount,
+                                                ).toLocaleString(undefined, {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2,
+                                                })}
+                                            </Label>
                                         </TableCell>
                                         <TableCell className="max-w-xs overflow-hidden font-medium">
                                             <Label className="block truncate">

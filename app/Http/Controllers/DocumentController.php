@@ -4,12 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DocumentController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
+
+        $requestData = $request->all();
+
+
+        if (isset($requestData['ammount'])) {
+            $requestData['ammount'] = str_replace(',', '', $requestData['ammount']);
+        }
+
+
+        $validated = Validator::make($requestData, [
+            'serial_no' => 'nullable|string|max:255',
             'payee' => 'required|string|max:255',
             'particulars' => 'nullable|string|max:255',
             'fpp' => 'nullable|string|max:255',
@@ -17,9 +28,10 @@ class DocumentController extends Controller
             'ammount' => 'required|numeric',
             'project_id' => 'required|exists:projects,id',
             'remarks' => 'nullable|string|max:1000',
-        ]);
+        ])->validate();
 
-        Document::create($request->all());
+
+        Document::create($validated);
 
         return redirect()->back()->with('success', 'Document created successfully.');
     }
@@ -29,16 +41,23 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
-        $request->validate([
-            'payee' => 'required|string|max:255 ',
+
+        $requestData = $request->all();
+
+        if (isset($requestData['ammount'])) {
+            $requestData['ammount'] = str_replace(',', '', $requestData['ammount']);
+        }
+
+        $validated = Validator::make($requestData, [
+            'payee' => 'required|string|max:255',
             'particulars' => 'nullable|string|max:255',
             'fpp' => 'nullable|string|max:255',
             'account_code' => 'nullable|string|max:255',
             'ammount' => 'required|numeric',
             'remarks' => 'nullable|string|max:1000',
-        ]);
+        ])->validate();
 
-        $document->update($request->all());
+        $document->update($validated);
 
         return redirect()->back()->with('success', 'Document updated successfully.');
     }
