@@ -229,7 +229,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                 onChange={handleSearchChange}
                                 placeholder="Search..."
                                 name="search"
-                                value={data.search}
+                                value={data.search || ''}
                             />
                         </div>
                     </div>
