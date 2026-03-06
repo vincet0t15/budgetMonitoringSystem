@@ -20,7 +20,7 @@ class OfficeController extends Controller
             ->paginate(25)
             ->withQueryString();
 
-        return Inertia::render('systemSettings/Office/index', [
+        return Inertia::render('Office/index', [
             'offices_list' => $offices,
             'filters' => $request->only('search'),
         ]);

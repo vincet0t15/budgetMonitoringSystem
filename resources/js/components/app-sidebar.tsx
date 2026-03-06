@@ -5,6 +5,7 @@ import {
     AudioWaveform,
     BookOpen,
     Bot,
+    Building2,
     Command,
     Frame,
     GalleryVerticalEnd,
@@ -26,6 +27,9 @@ import {
     SidebarRail,
 } from '@/components/ui/sidebar';
 import { usePage } from '@inertiajs/react';
+import { NavItem } from '@/types/navigation';
+import offices from '@/routes/offices';
+import { NavFooter } from './nav-footer';
 
 const data = {
     user: {
@@ -138,7 +142,13 @@ const data = {
         },
     ],
 };
-
+const footerNavItems: NavItem[] = [
+    {
+        title: 'Office',
+        href: offices.index.url(),
+        icon: Building2,
+    },
+];
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { auth, sharedProjects } = usePage().props as any;
 
@@ -151,6 +161,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <NavProjects projects={sharedProjects} />
             </SidebarContent>
             <SidebarFooter>
+                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser user={auth.user} />
             </SidebarFooter>
             <SidebarRail />
