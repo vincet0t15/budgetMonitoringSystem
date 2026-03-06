@@ -55,7 +55,6 @@ export default function EditDocument({ open, setOpen, document }: Props) {
     const submit: SubmitEventHandler = (e) => {
         e.preventDefault();
 
-        // Prepare payload
         const payload = {
             ...data,
             ammount: Number(data.ammount.replace(/,/g, '')), // remove commas

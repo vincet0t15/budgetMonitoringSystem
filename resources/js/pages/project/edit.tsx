@@ -38,6 +38,7 @@ export function EditProjectDialog({ open, isOpen, project }: Props) {
     const submit: SubmitEventHandler = (e) => {
         e.preventDefault();
         put(projects.update(project.id).url, {
+            preserveScroll: true,
             onSuccess: () => {
                 reset();
                 isOpen(false);
