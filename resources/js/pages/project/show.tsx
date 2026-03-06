@@ -252,9 +252,10 @@ export default function Dashboard({ project, documents, filters }: Props) {
 
                                 <TableHead className="">Serial No.</TableHead>
                                 <TableHead className="">Payee</TableHead>
+                                <TableHead className="">Date Created</TableHead>
                                 <TableHead className="">Particulars</TableHead>
                                 <TableHead className="">F.P.P</TableHead>
-                                <TableHead className="">Account Code</TableHead>
+                                {/* <TableHead className="">Account Code</TableHead> */}
                                 <TableHead className="">Ammount</TableHead>
                                 <TableHead className="">Remarks</TableHead>
                                 <TableHead className="text-center">
@@ -287,8 +288,13 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                                 {data.serial_no}
                                             </Label>
                                         </TableCell>
+                                        <TableCell className="max-w-xs overflow-hidden font-medium">
+                                            <Label className="block truncate">
+                                                {data.payee}
+                                            </Label>
+                                        </TableCell>
                                         <TableCell className="font-medium">
-                                            <Label>{data.payee}</Label>
+                                            <Label>{data.date_created}</Label>
                                         </TableCell>
                                         <TableCell className="max-w-xs overflow-hidden font-medium">
                                             <Label className="block truncate">
@@ -298,9 +304,9 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                         <TableCell className="font-medium">
                                             <Label>{data.fpp}</Label>
                                         </TableCell>
-                                        <TableCell className="font-medium">
+                                        {/* <TableCell className="font-medium">
                                             <Label>{data.account_code}</Label>
-                                        </TableCell>
+                                        </TableCell> */}
                                         <TableCell className="font-medium">
                                             <Label>
                                                 {' '}
