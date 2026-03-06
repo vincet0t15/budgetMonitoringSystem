@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -31,6 +32,12 @@ Route::middleware(['auth', 'verified',])->group(function () {
     Route::post('documents/bulk-return', [DocumentController::class, 'bulkMarkAsReturned'])->name('documents.bulk-return');
     Route::post('documents/bulk-pending', [DocumentController::class, 'bulkMarkAsPending'])->name('documents.bulk-pending');
     Route::get('documents/filter/{projectId?}', [DocumentController::class, 'filterDocuments'])->name('documents.filter');
+
+    //OFFICES
+    Route::get('offices', [OfficeController::class, 'index'])->name('offices.index');
+    Route::post('offices', [OfficeController::class, 'store'])->name('offices.store');
+    Route::put('offices/{office}', [OfficeController::class, 'update'])->name('offices.update');
+    Route::delete('offices/{office}', [OfficeController::class, 'destroy'])->name('offices.destroy');
 });
 
 require __DIR__ . '/settings.php';
