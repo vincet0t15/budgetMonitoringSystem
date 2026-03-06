@@ -113,7 +113,7 @@ export function NavUser({
 
                         <DropdownMenuItem>
                             <Link
-                                className="block w-full"
+                                className="flex gap-2"
                                 href={logout()}
                                 method="post"
                                 as="button"
