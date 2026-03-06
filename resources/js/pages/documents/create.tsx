@@ -17,13 +17,28 @@ import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { ChangeEventHandler, SubmitEventHandler } from 'react';
 import { toast } from 'sonner';
+import {
+    Combobox,
+    ComboboxContent,
+    ComboboxEmpty,
+    ComboboxInput,
+    ComboboxItem,
+    ComboboxList,
+} from '@/components/ui/combobox';
+import { OfficeProps } from '@/types/office';
 
 interface Props {
     open: boolean;
     setOpen: (open: boolean) => void;
     projectId: number;
+    offices: OfficeProps[];
 }
-export default function CreateDocument({ open, setOpen, projectId }: Props) {
+export default function CreateDocument({
+    open,
+    setOpen,
+    projectId,
+    offices,
+}: Props) {
     const { data, setData, processing, errors, post, reset } =
         useForm<DocumentTypes>({
             payee: '',
@@ -34,6 +49,7 @@ export default function CreateDocument({ open, setOpen, projectId }: Props) {
             ammount: '',
             project_id: projectId,
             remarks: '',
+            office_id: '',
         });
 
     const submit: SubmitEventHandler = (e) => {
@@ -47,34 +63,23 @@ export default function CreateDocument({ open, setOpen, projectId }: Props) {
         });
     };
 
-    // const handleInputChange: ChangeEventHandler<
-    //     HTMLInputElement | HTMLTextAreaElement
-    // > = (e) => {
-    //     setData({ ...data, [e.target.name]: e.target.value });
-    // };
-
     const handleInputChange: ChangeEventHandler<
         HTMLInputElement | HTMLTextAreaElement
     > = (e) => {
         const { name, value } = e.target;
 
         if (name === 'ammount') {
-            // Remove all commas first
             let numericValue = value.replace(/,/g, '');
 
-            // Allow digits and one decimal point
             if (!/^\d*\.?\d*$/.test(numericValue)) return;
 
-            // Split integer and decimal part
             const [integerPart, decimalPart] = numericValue.split('.');
 
-            // Format integer part with commas
             const formattedInteger = integerPart.replace(
                 /\B(?=(\d{3})+(?!\d))/g,
                 ',',
             );
 
-            // Recombine with decimal if exists
             const formattedValue =
                 decimalPart !== undefined
                     ? `${formattedInteger}.${decimalPart}`
@@ -86,6 +91,11 @@ export default function CreateDocument({ open, setOpen, projectId }: Props) {
         }
     };
 
+    console.log(offices);
+
+    const onChangeOffice = (value: string) => {
+        setData({ ...data, office_id: value });
+    };
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent>
@@ -108,6 +118,28 @@ export default function CreateDocument({ open, setOpen, projectId }: Props) {
                         />
                         <InputError message={errors.serial_no} />
                     </div>
+
+                    <Combobox
+                        items={offices}
+                        itemToStringValue={(office: OfficeProps) => office.id}
+                    >
+                        <ComboboxInput placeholder="Select an office" />
+
+                        <ComboboxContent>
+                            <ComboboxEmpty>No items found.</ComboboxEmpty>
+
+                            <ComboboxList>
+                                {(office: OfficeProps) => (
+                                    <ComboboxItem
+                                        key={office.id}
+                                        value={String(office.id)}
+                                    >
+                                        {office.name}
+                                    </ComboboxItem>
+                                )}
+                            </ComboboxList>
+                        </ComboboxContent>
+                    </Combobox>
 
                     <div className="grid gap-2">
                         <Label>Payee</Label>

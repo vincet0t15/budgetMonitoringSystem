@@ -157,12 +157,12 @@ class DocumentController extends Controller
     {
         $query = Document::query();
 
-        // Filter by project if provided
+
         if ($projectId) {
             $query->where('project_id', $projectId);
         }
 
-        // Filter by return status
+
         $status = $request->query('status');
         if ($status === 'returned') {
             $query->returned();
@@ -170,7 +170,7 @@ class DocumentController extends Controller
             $query->pending();
         }
 
-        // Apply search filter if provided
+
         $search = $request->query('search');
         if ($search) {
             $query->where(function ($q) use ($search) {

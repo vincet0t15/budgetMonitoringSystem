@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Office;
 use App\Models\Project;
 
 use Illuminate\Http\Request;
@@ -35,6 +36,7 @@ class ProjectController extends Controller
 
         $query = $project->documents()->with('receivedBackDocuments');
 
+        $offices = Office::orderBy('name')->get();
 
         if ($statusId === 'return') {
             $query->returned();
@@ -55,6 +57,7 @@ class ProjectController extends Controller
         $documents = $query->latest('date_created')->paginate(50);
 
         return inertia('project/show', [
+            'offices' => $offices,
             'project' => $project,
             'documents' => $documents,
             'filters' => [

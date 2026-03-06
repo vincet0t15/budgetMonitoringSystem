@@ -29,13 +29,20 @@ import ViewDocument from '../documents/view';
 import { Label } from '@/components/ui/label';
 import { FilterProps } from '@/types/filter';
 import projects from '@/routes/projects';
+import { OfficeProps } from '@/types/office';
 
 interface Props {
     project: ProjectProps;
     documents: PaginatedDataResponse<DocumentProps>;
     filters: FilterProps;
+    offices: OfficeProps[];
 }
-export default function Dashboard({ project, documents, filters }: Props) {
+export default function Dashboard({
+    project,
+    documents,
+    filters,
+    offices,
+}: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: project.name,
@@ -377,6 +384,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
 
                 {openCreateDocument && (
                     <CreateDocument
+                        offices={offices}
                         open={openCreateDocument}
                         setOpen={setOpenCreateDocument}
                         projectId={project.id}

@@ -21,6 +21,12 @@ export interface DocumentProps {
     user_id: number;
     remarks?: string;
     received_back_documents?: ReceivedBackDocument[];
+    office_id: number;
 }
 
-export type DocumentTypes = Omit<DocumentProps, 'id','user_id','received_back_documents'>;
+export type DocumentTypes = Omit<
+    DocumentProps,
+    'id',
+    'user_id',
+    'received_back_documents'
+>;
