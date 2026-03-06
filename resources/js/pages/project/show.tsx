@@ -333,7 +333,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                                         </span>
                                                     </div>
                                                 ) : (
-                                                    <Circle className="h-5 w-5 text-gray-400" />
+                                                    <span>--</span>
                                                 )}
                                             </div>
                                         </TableCell>
