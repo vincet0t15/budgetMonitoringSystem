@@ -249,7 +249,7 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                         onCheckedChange={toggleSelectAll}
                                     />
                                 </TableHead>
-                                <TableHead className="w-5">#</TableHead>
+
                                 <TableHead className="">Serial No.</TableHead>
                                 <TableHead className="">Payee</TableHead>
                                 <TableHead className="">Particulars</TableHead>
@@ -278,9 +278,6 @@ export default function Dashboard({ project, documents, filters }: Props) {
                                                     toggleSelect(data.id)
                                                 }
                                             />
-                                        </TableCell>
-                                        <TableCell className="w-5 font-medium">
-                                            {index + 1}
                                         </TableCell>
                                         <TableCell className="font-medium">
                                             <Label
