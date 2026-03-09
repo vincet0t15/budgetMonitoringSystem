@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 
 class DocumentController extends Controller
 {
@@ -192,5 +194,11 @@ class DocumentController extends Controller
                 'last_page' => $documents->lastPage(),
             ],
         ]);
+    }
+
+    public function register(Project $project)
+    {
+
+        Inertia::render('documents/register');
     }
 }

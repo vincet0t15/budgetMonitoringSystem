@@ -59,7 +59,7 @@ class ProjectController extends Controller
         return inertia('project/show', [
             'offices' => $offices,
             'project' => $project,
-            'documents' => $documents,
+            'documentList' => $documents,
             'filters' => [
                 'search' => $search,
                 'statusId' => $statusId,

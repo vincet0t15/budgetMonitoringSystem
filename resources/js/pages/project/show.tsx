@@ -31,16 +31,18 @@ import { FilterProps } from '@/types/filter';
 import projects from '@/routes/projects';
 import { OfficeProps } from '@/types/office';
 import { Badge } from '@/components/ui/badge';
+import documents from '@/routes/documents';
+
 
 interface Props {
     project: ProjectProps;
-    documents: PaginatedDataResponse<DocumentProps>;
+    documentList: PaginatedDataResponse<DocumentProps>;
     filters: FilterProps;
     offices: OfficeProps[];
 }
 export default function Dashboard({
     project,
-    documents,
+    documentList,
     filters,
     offices,
 }: Props) {
@@ -106,10 +108,10 @@ export default function Dashboard({
     };
 
     const toggleSelectAll = () => {
-        if (selectedIds.length === documents.data.length) {
+        if (selectedIds.length === documentList.data.length) {
             setSelectedIds([]);
         } else {
-            setSelectedIds(documents.data.map((d) => d.id));
+            setSelectedIds(documentList.data.map((d) => d.id));
         }
     };
 
@@ -189,6 +191,17 @@ export default function Dashboard({
                                 Register Document
                             </span>
                         </Button>
+                        <Button
+                            className="cursor-pointer rounded-sm"
+                            onClick={() =>
+                                router.get(documents.register(project.id))
+                            }
+                        >
+                            <PlusIcon />
+                            <span className="rounded-sm lg:inline">
+                                Register Document1
+                            </span>
+                        </Button>
                         {selectedIds.length > 0 && (
                             <div className="flex gap-2">
                                 <Button
@@ -252,7 +265,7 @@ export default function Dashboard({
                                         checked={
                                             selectedIds.length > 0 &&
                                             selectedIds.length ===
-                                            documents.data.length
+                                            documentList.data.length
                                         }
                                         onCheckedChange={toggleSelectAll}
                                     />
@@ -272,8 +285,8 @@ export default function Dashboard({
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {documents.data.length > 0 ? (
-                                documents.data.map((data, index) => (
+                            {documentList.data.length > 0 ? (
+                                documentList.data.map((data, index) => (
                                     <TableRow key={index}>
                                         <TableCell className="w-5">
                                             <Checkbox
@@ -381,7 +394,7 @@ export default function Dashboard({
                     </Table>
                 </div>
                 <div>
-                    <Pagination data={documents} />
+                    <Pagination data={documentList} />
                 </div>
 
                 {openCreateDocument && (
