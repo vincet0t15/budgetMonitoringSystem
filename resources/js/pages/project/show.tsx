@@ -23,7 +23,7 @@ import React, {
     KeyboardEventHandler,
     useState,
 } from 'react';
-import CreateDocument from '../documents/create';
+
 import ViewDocument from '../documents/view';
 import { Label } from '@/components/ui/label';
 import { FilterProps } from '@/types/filter';
@@ -176,15 +176,7 @@ export default function Dashboard({
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex gap-2">
-                        <Button
-                            className="cursor-pointer rounded-sm"
-                            onClick={() => setOpenCreateDocument(true)}
-                        >
-                            <PlusIcon />
-                            <span className="rounded-sm lg:inline">
-                                Register Document
-                            </span>
-                        </Button>
+
                         <Button
                             className="cursor-pointer rounded-sm"
                             onClick={() =>
@@ -193,7 +185,7 @@ export default function Dashboard({
                         >
                             <PlusIcon />
                             <span className="rounded-sm lg:inline">
-                                Register Document1
+                                Register Document
                             </span>
                         </Button>
                         {selectedIds.length > 0 && (
@@ -393,14 +385,7 @@ export default function Dashboard({
                     <Pagination data={documentList} />
                 </div>
 
-                {openCreateDocument && (
-                    <CreateDocument
-                        offices={offices}
-                        open={openCreateDocument}
-                        setOpen={setOpenCreateDocument}
-                        projectId={project.id}
-                    />
-                )}
+
                 {openViewDocument && viewingDocument && (
                     <ViewDocument
                         open={openViewDocument}
