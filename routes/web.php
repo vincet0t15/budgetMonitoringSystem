@@ -46,6 +46,7 @@ Route::middleware(['auth', 'verified',])->group(function () {
     Route::delete('accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
     Route::put('accounts/{account}/activate', [AccountController::class, 'activate'])->name('accounts.activate');
     Route::put('accounts/{account}/deactivate', [AccountController::class, 'deactivate'])->name('accounts.deactivate');
+    Route::put('accounts/{account}/toggle-admin', [AccountController::class, 'toggleAdmin'])->name('accounts.toggle-admin');
 
 
     //OFFICES

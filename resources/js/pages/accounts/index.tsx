@@ -36,29 +36,48 @@ export default function index({ accountList, filters }: Props) {
     const [search, setSearch] = useState(filters.search || '');
     const [selectedAccount, setSelectedAccount] = useState<User | null>(null);
     const [isConfirmOpen, setConfirmOpen] = useState(false);
+    const [confirmationProps, setConfirmationProps] = useState<any>(null);
 
     const handleStatusChange = (account: User) => {
-        setSelectedAccount(account);
+        setConfirmationProps({
+            title: `Confirm ${account.is_active ? 'Deactivation' : 'Activation'}`,
+            description: `Are you sure you want to ${account.is_active ? 'deactivate' : 'activate'} this account?`,
+            onConfirm: () => {
+                const url = account.is_active
+                    ? accounts.deactivate(account.id).url
+                    : accounts.activate(account.id).url;
+
+                router.put(url, {},
+                    {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            toast.success(`Account ${account.is_active ? 'deactivated' : 'activated'} successfully.`);
+                            setConfirmOpen(false);
+                        },
+                    }
+                );
+            }
+        });
         setConfirmOpen(true);
     };
 
-    const handleConfirm = () => {
-        if (selectedAccount) {
-            const url = selectedAccount.is_active
-                ? accounts.deactivate(selectedAccount.id).url
-                : accounts.activate(selectedAccount.id).url;
-
-            router.put(url, {},
-                {
-                    preserveScroll: true,
-                    onSuccess: () => {
-                        toast.success(`Account ${selectedAccount.is_active ? 'deactivated' : 'activated'} successfully.`);
-                        setConfirmOpen(false);
-                        setSelectedAccount(null);
-                    },
-                }
-            );
-        }
+    const handleAdminChange = (account: User) => {
+        setConfirmationProps({
+            title: `Confirm Admin Status Change`,
+            description: `Are you sure you want to ${account.is_admin ? 'remove admin rights from' : 'grant admin rights to'} this account?`,
+            onConfirm: () => {
+                router.put(accounts.toggleAdmin(account.id).url, {},
+                    {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            toast.success('Admin status updated successfully.');
+                            setConfirmOpen(false);
+                        },
+                    }
+                );
+            }
+        });
+        setConfirmOpen(true);
     };
     const handleSearch: ChangeEventHandler<HTMLInputElement> = (e) => {
         setSearch(e.target.value);
@@ -108,6 +127,10 @@ export default function index({ accountList, filters }: Props) {
                                     Status
                                 </TableHead>
 
+                                <TableHead className="font-bold text-primary">
+                                    Admin
+                                </TableHead>
+
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -138,6 +161,13 @@ export default function index({ accountList, filters }: Props) {
                                                 )}
                                             </Badge>
                                         </TableCell>
+                                        <TableCell>
+                                            <Badge
+                                                className="px-1.5 text-muted-foreground bg-blue-100 cursor-pointer"
+                                                onClick={() => handleAdminChange(user)}>
+                                                {user.is_admin ? 'Yes' : 'No'}
+                                            </Badge>
+                                        </TableCell>
                                     </TableRow>
                                 ))
                             ) : (
@@ -158,13 +188,11 @@ export default function index({ accountList, filters }: Props) {
                 </div>
             </div>
 
-            {selectedAccount && (
+            {confirmationProps && (
                 <ConfirmationAlert
                     open={isConfirmOpen}
                     onClose={() => setConfirmOpen(false)}
-                    onConfirm={handleConfirm}
-                    title={`Confirm ${selectedAccount.is_active ? 'Deactivation' : 'Activation'}`}
-                    description={`Are you sure you want to ${selectedAccount.is_active ? 'deactivate' : 'activate'} this account?`}
+                    {...confirmationProps}
                 />
             )}
         </AppLayout>

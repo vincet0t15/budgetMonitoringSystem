@@ -29,4 +29,10 @@ class AccountController extends Controller
         $account->update(['is_active' => false]);
         return redirect()->back()->with('success', 'Account deactivated successfully.');
     }
+
+    public function toggleAdmin(User $account)
+    {
+        $account->update(['is_admin' => !$account->is_admin]);
+        return redirect()->back()->with('success', 'Admin status updated successfully.');
+    }
 }
