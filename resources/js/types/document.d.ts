@@ -1,3 +1,5 @@
+import { OfficeProps } from "./office";
+
 export interface ReceivedBackDocument {
     id: number;
     document_id: number;
@@ -22,6 +24,7 @@ export interface DocumentProps {
     remarks?: string;
     received_back_documents?: ReceivedBackDocument[];
     office_id: number;
+    office: OfficeProps
 }
 
 export type DocumentTypes = Omit<

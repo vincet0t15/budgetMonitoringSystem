@@ -206,4 +206,15 @@ class DocumentController extends Controller
             'offices' => $offices,
         ]);
     }
+
+    public function edit(Document $document)
+    {
+        $offices = Office::all();
+        $project = Project::find($document->project_id);
+        return Inertia::render('documents/edit', [
+            'document' => $document,
+            'project' => $project,
+            'offices' => $offices,
+        ]);
+    }
 }

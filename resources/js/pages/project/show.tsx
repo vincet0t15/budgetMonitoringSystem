@@ -24,7 +24,6 @@ import React, {
     useState,
 } from 'react';
 import CreateDocument from '../documents/create';
-import EditDocument from '../documents/edit';
 import ViewDocument from '../documents/view';
 import { Label } from '@/components/ui/label';
 import { FilterProps } from '@/types/filter';
@@ -92,10 +91,8 @@ export default function Dashboard({
     };
 
     const [openCreateDocument, setOpenCreateDocument] = React.useState(false);
-    const [openEditDocument, setOpenEditDocument] = React.useState(false);
     const [openViewDocument, setOpenViewDocument] = React.useState(false);
-    const [editingDocument, setEditingDocument] =
-        useState<DocumentProps | null>(null);
+
     const [viewingDocument, setViewingDocument] =
         useState<DocumentProps | null>(null);
 
@@ -119,10 +116,7 @@ export default function Dashboard({
         setData('search', e.target.value);
     };
 
-    const handleEdit = (doc: DocumentProps) => {
-        setEditingDocument(doc);
-        setOpenEditDocument(true);
-    };
+
 
     const handleView = (doc: DocumentProps) => {
         setViewingDocument(doc);
@@ -273,6 +267,7 @@ export default function Dashboard({
                                 <TableHead className="">Serial No.</TableHead>
                                 <TableHead className="">Payee</TableHead>
                                 <TableHead className="">Date Created</TableHead>
+                                <TableHead className="">Office Originated</TableHead>
                                 <TableHead className="">F.P.P</TableHead>
                                 <TableHead className="">Ammount</TableHead>
                                 <TableHead className="">Remarks</TableHead>
@@ -317,9 +312,10 @@ export default function Dashboard({
                                                     ? new Date(data.date_created).toLocaleDateString()
                                                     : ''}
                                             </span>
-
                                         </TableCell>
-
+                                        <TableCell className="font-medium">
+                                            <Label>{data.office?.name || '-'}</Label>
+                                        </TableCell>
                                         <TableCell className="font-medium">
                                             <Label>{data.fpp}</Label>
                                         </TableCell>
@@ -371,7 +367,7 @@ export default function Dashboard({
                                                 <Label
                                                     className="cursor-pointer text-blue-600 hover:underline"
                                                     onClick={() =>
-                                                        handleEdit(data)
+                                                        router.get(documents.edit(data.id).url)
                                                     }
                                                 >
                                                     Edit
@@ -403,14 +399,6 @@ export default function Dashboard({
                         open={openCreateDocument}
                         setOpen={setOpenCreateDocument}
                         projectId={project.id}
-                    />
-                )}
-                {openEditDocument && editingDocument && (
-                    <EditDocument
-                        open={openEditDocument}
-                        setOpen={setOpenEditDocument}
-                        document={editingDocument}
-                        offices={offices}
                     />
                 )}
                 {openViewDocument && viewingDocument && (

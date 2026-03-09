@@ -116,4 +116,9 @@ class Document extends Model
             $document->date_created = Carbon::now('singapore')->toDateTimeString();
         });
     }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class);
+    }
 }

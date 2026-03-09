@@ -29,12 +29,13 @@ class ProjectController extends Controller
 
     public function show(Request $request, Project $project)
     {
+
         abort_if($project->user_id !== Auth::id(), 403);
 
         $search = $request->query('search');
         $statusId = $request->query('statusId');
 
-        $query = $project->documents()->with('receivedBackDocuments');
+        $query = $project->documents()->with('receivedBackDocuments', 'office');
 
         $offices = Office::orderBy('name')->get();
 

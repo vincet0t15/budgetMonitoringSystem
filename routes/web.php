@@ -33,7 +33,8 @@ Route::middleware(['auth', 'verified',])->group(function () {
     Route::post('documents/bulk-return', [DocumentController::class, 'bulkMarkAsReturned'])->name('documents.bulk-return');
     Route::post('documents/bulk-pending', [DocumentController::class, 'bulkMarkAsPending'])->name('documents.bulk-pending');
     Route::get('documents/filter/{projectId?}', [DocumentController::class, 'filterDocuments'])->name('documents.filter');
-    Route::get('documents/{project}', [DocumentController::class, 'register'])->name('documents.register');
+    Route::get('documents/register/{project}', [DocumentController::class, 'register'])->name('documents.register');
+    Route::get('documents/{document}/edit', [DocumentController::class, 'edit'])->name('documents.edit');
 
     //OFFICES
     Route::get('offices', [OfficeController::class, 'index'])->name('offices.index');

@@ -1,19 +1,15 @@
+import AppLayout from '@/layouts/app-layout';
+import { BreadcrumbItem } from '@/types';
+import { DocumentProps, DocumentTypes } from '@/types/document';
+import { OfficeProps } from '@/types/office';
+import { ProjectProps } from '@/types/project';
+import { Head, useForm } from '@inertiajs/react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import documents from '@/routes/documents';
-import { DocumentProps, DocumentTypes } from '@/types/document';
-import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { ChangeEventHandler, SubmitEventHandler, useEffect } from 'react';
 import { toast } from 'sonner';
@@ -25,63 +21,54 @@ import {
     ComboboxItem,
     ComboboxList,
 } from '@/components/ui/combobox';
-import { OfficeProps } from '@/types/office';
 
 interface Props {
-    open: boolean;
-    setOpen: (open: boolean) => void;
-    document: DocumentProps | null;
+    document: DocumentProps;
+    project: ProjectProps;
     offices: OfficeProps[];
 }
 
-export default function EditDocument({
-    open,
-    setOpen,
-    document,
-    offices,
-}: Props) {
+export default function EditDocument({ document, project, offices }: Props) {
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Projects',
+            href: '/projects',
+        },
+        {
+            title: project.name,
+            href: `/projects/${project.id}`,
+        },
+        {
+            title: 'Edit Document',
+            href: `/documents/${document.id}/edit`,
+        },
+    ];
+
     const { data, setData, processing, errors, put, reset } =
         useForm<DocumentTypes>({
-            payee: '',
-            particulars: '',
-            serial_no: '',
-            fpp: '',
-            account_code: '',
-            ammount: '',
-            project_id: document?.project_id ?? 0,
-            remarks: document?.remarks ?? '',
-            office_id: document?.office_id ?? '',
+            payee: document.payee,
+            particulars: document.particulars,
+            serial_no: document.serial_no,
+            fpp: document.fpp,
+            account_code: document.account_code,
+            ammount: document.ammount,
+            project_id: document.project_id,
+            remarks: document.remarks ?? '',
+            office_id: document.office_id,
         });
-
-    useEffect(() => {
-        if (document) {
-            setData({
-                payee: document.payee,
-                particulars: document.particulars,
-                serial_no: document.serial_no,
-                fpp: document.fpp,
-                account_code: document.account_code,
-                ammount: document.ammount,
-                project_id: document.project_id,
-                remarks: document.remarks ?? '',
-                office_id: document.office_id,
-            });
-        }
-    }, [document]);
 
     const submit: SubmitEventHandler = (e) => {
         e.preventDefault();
 
         const payload = {
             ...data,
-            ammount: Number(data.ammount.replace(/,/g, '')), // remove commas
+            ammount: data.ammount.replace(/,/g, ''),
         };
 
-        put(documents.update(Number(document?.id)).url, {
+        put(documents.update(Number(document.id)).url, {
             ...payload,
             onSuccess: () => {
                 toast.success('Document updated successfully');
-                setOpen(false);
             },
         });
     };
@@ -120,16 +107,17 @@ export default function EditDocument({
     };
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
-                <form className="flex flex-col gap-6" onSubmit={submit}>
-                    <DialogHeader>
-                        <DialogTitle>Edit Document</DialogTitle>
-                        <DialogDescription>
-                            Update the document details below.
-                        </DialogDescription>
-                    </DialogHeader>
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Edit Document" />
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
+                <div className="flex flex-col gap-1">
+                    <h1 className="text-2xl font-bold tracking-tight">Edit Document</h1>
+                    <p className="text-muted-foreground">
+                        Update the document details for project: <span className="font-medium text-foreground">{project.name}</span>
+                    </p>
+                </div>
 
+                <form className="flex flex-col gap-6 mt-4" onSubmit={submit}>
                     <div className="grid gap-2">
                         <Label>Serial No.</Label>
                         <Input
@@ -241,20 +229,28 @@ export default function EditDocument({
                         />
                         <InputError message={errors.remarks} />
                     </div>
-                    <DialogFooter>
+
+                    <div className="flex justify-end gap-3">
                         <Button
-                            className="w-full cursor-pointer"
+                            variant="outline"
+                            type="button"
+                            onClick={() => window.history.back()}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            className="min-w-[100px] cursor-pointer"
                             type="submit"
                             disabled={processing}
                         >
                             {processing && (
-                                <LoaderCircle className="h-4 w-4 animate-spin" />
+                                <LoaderCircle className="h-4 w-4 animate-spin mr-2" />
                             )}
-                            Save
+                            Save Changes
                         </Button>
-                    </DialogFooter>
+                    </div>
                 </form>
-            </DialogContent>
-        </Dialog>
+            </div>
+        </AppLayout>
     );
 }
