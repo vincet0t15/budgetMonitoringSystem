@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified',])->group(function () {
     Route::get('documents/filter/{projectId?}', [DocumentController::class, 'filterDocuments'])->name('documents.filter');
     Route::get('documents/register/{project}', [DocumentController::class, 'register'])->name('documents.register');
     Route::get('documents/{document}/edit', [DocumentController::class, 'edit'])->name('documents.edit');
+    Route::delete('documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
 
     //OFFICES
     Route::get('offices', [OfficeController::class, 'index'])->name('offices.index');

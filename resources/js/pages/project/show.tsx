@@ -31,6 +31,8 @@ import projects from '@/routes/projects';
 import { OfficeProps } from '@/types/office';
 import { Badge } from '@/components/ui/badge';
 import documents from '@/routes/documents';
+import { toast } from 'sonner';
+import DeleteDocument from '../documents/delete';
 
 
 interface Props {
@@ -43,7 +45,7 @@ export default function Dashboard({
     project,
     documentList,
     filters,
-    offices,
+
 }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -90,7 +92,6 @@ export default function Dashboard({
         });
     };
 
-    const [openCreateDocument, setOpenCreateDocument] = React.useState(false);
     const [openViewDocument, setOpenViewDocument] = React.useState(false);
 
     const [viewingDocument, setViewingDocument] =
@@ -169,6 +170,18 @@ export default function Dashboard({
         );
         setSelectedIds([]);
     };
+
+    const [selectedData, setSelectedData] = useState<DocumentProps | null>(null);
+    const [openDeleteDocument, setOpenDeleteDocument] = useState(false);
+
+    const handleDelete = (data: DocumentProps) => {
+        setSelectedData(data);
+        setOpenDeleteDocument(true);
+    };
+
+
+
+
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -355,7 +368,7 @@ export default function Dashboard({
                                         </TableCell>
 
                                         <TableCell className="text-center">
-                                            <div className="flex items-center justify-center gap-2">
+                                            <div className="flex items-center justify-center gap-3">
                                                 <Label
                                                     className="cursor-pointer text-blue-600 hover:underline"
                                                     onClick={() =>
@@ -363,6 +376,14 @@ export default function Dashboard({
                                                     }
                                                 >
                                                     Edit
+                                                </Label>
+                                                <Label
+                                                    className="cursor-pointer text-red-600 hover:underline"
+                                                    onClick={() =>
+                                                        handleDelete(data)
+                                                    }
+                                                >
+                                                    Delete
                                                 </Label>
                                             </div>
                                         </TableCell>
@@ -391,6 +412,14 @@ export default function Dashboard({
                         open={openViewDocument}
                         setOpen={setOpenViewDocument}
                         document={viewingDocument}
+                    />
+                )}
+
+                {openDeleteDocument && selectedData && (
+                    <DeleteDocument
+                        open={openDeleteDocument}
+                        setOpen={setOpenDeleteDocument}
+                        document={selectedData}
                     />
                 )}
             </div>

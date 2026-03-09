@@ -217,4 +217,10 @@ class DocumentController extends Controller
             'offices' => $offices,
         ]);
     }
+
+    public function destroy(Document $document)
+    {
+        $document->delete();
+        return redirect()->back()->with('success', 'Document deleted successfully.');
+    }
 }
