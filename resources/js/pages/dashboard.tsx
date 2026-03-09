@@ -130,9 +130,7 @@ export default function Dashboard({ stats, recentProjects, recentDocuments }: Da
                     <div key={project.id} className="flex items-center justify-between border-b pb-2 last:border-0">
                       <div className="space-y-1">
                         <p className="text-sm font-medium leading-none">{project.name}</p>
-
                       </div>
-                      {/* <Badge variant="secondary" className="text-[10px]">{project. || 'Active'}</Badge> */}
                     </div>
                   ))
                 ) : (
