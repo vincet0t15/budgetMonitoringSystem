@@ -17,4 +17,16 @@ class AccountController extends Controller
             'filters' => $request->only(['search']),
         ]);
     }
+
+    public function activate(User $account)
+    {
+        $account->update(['is_active' => true]);
+        return redirect()->back()->with('success', 'Account activated successfully.');
+    }
+
+    public function deactivate(User $account)
+    {
+        $account->update(['is_active' => false]);
+        return redirect()->back()->with('success', 'Account deactivated successfully.');
+    }
 }

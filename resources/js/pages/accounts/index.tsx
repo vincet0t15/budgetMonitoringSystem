@@ -17,6 +17,9 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
+import ConfirmationAlert from '@/components/confirmation-alert';
+import { router } from '@inertiajs/react';
+import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -31,7 +34,32 @@ interface Props {
 }
 export default function index({ accountList, filters }: Props) {
     const [search, setSearch] = useState(filters.search || '');
-    console.log(accountList)
+    const [selectedAccount, setSelectedAccount] = useState<User | null>(null);
+    const [isConfirmOpen, setConfirmOpen] = useState(false);
+
+    const handleStatusChange = (account: User) => {
+        setSelectedAccount(account);
+        setConfirmOpen(true);
+    };
+
+    const handleConfirm = () => {
+        if (selectedAccount) {
+            const url = selectedAccount.is_active
+                ? accounts.deactivate(selectedAccount.id).url
+                : accounts.activate(selectedAccount.id).url;
+
+            router.put(url, {},
+                {
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        toast.success(`Account ${selectedAccount.is_active ? 'deactivated' : 'activated'} successfully.`);
+                        setConfirmOpen(false);
+                        setSelectedAccount(null);
+                    },
+                }
+            );
+        }
+    };
     const handleSearch: ChangeEventHandler<HTMLInputElement> = (e) => {
         setSearch(e.target.value);
     };
@@ -90,27 +118,25 @@ export default function index({ accountList, filters }: Props) {
                                             <span>{user.name}</span>
                                         </TableCell>
                                         <TableCell>
-
-                                            {user.is_active ? (
-                                                <Badge className="px-1.5 text-muted-foreground bg-teal-100">
+                                            <Badge
+                                                className="px-1.5 text-muted-foreground bg-teal-100 cursor-pointer"
+                                                onClick={() => handleStatusChange(user)}>
+                                                {user.is_active ? (
                                                     <div className='flex gap-2'>
                                                         <CheckCircle className="h-4 w-4 text-green-600" />
                                                         <span className="text-xs text-black ">
                                                             Active
                                                         </span>
                                                     </div>
-                                                </Badge>
-
-                                            ) : (
-                                                <Badge className="px-1.5 text-muted-foreground bg-orange-100">
+                                                ) : (
                                                     <div className='flex gap-2'>
                                                         <AlertCircle className="h-4 w-4 text-red-600" />
                                                         <span className="text-xs text-black ">
                                                             Inactive
                                                         </span>
                                                     </div>
-                                                </Badge>
-                                            )}
+                                                )}
+                                            </Badge>
                                         </TableCell>
                                     </TableRow>
                                 ))
@@ -132,6 +158,15 @@ export default function index({ accountList, filters }: Props) {
                 </div>
             </div>
 
+            {selectedAccount && (
+                <ConfirmationAlert
+                    open={isConfirmOpen}
+                    onClose={() => setConfirmOpen(false)}
+                    onConfirm={handleConfirm}
+                    title={`Confirm ${selectedAccount.is_active ? 'Deactivation' : 'Activation'}`}
+                    description={`Are you sure you want to ${selectedAccount.is_active ? 'deactivate' : 'activate'} this account?`}
+                />
+            )}
         </AppLayout>
     )
 }
