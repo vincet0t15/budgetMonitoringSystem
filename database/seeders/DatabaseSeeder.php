@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        User::factory()->create([
-            'name' => 'ZYRUS VINCE B. FAMINI',
-            'username' => 'admin',
-            'password' => Hash::make('admin'),
-            'is_active' => true,
-        ]);
+        // User::factory()->create([
+        //     'name' => 'ZYRUS VINCE B. FAMINI',
+        //     'username' => 'admin',
+        //     'password' => Hash::make('admin'),
+        //     'is_active' => true,
+        // ]);
 
         $this->call(OfficeSeeder::class);
     }
