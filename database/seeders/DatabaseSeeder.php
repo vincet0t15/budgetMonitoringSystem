@@ -22,5 +22,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin'),
             'is_active' => true,
         ]);
+
+        $this->call(OfficeSeeder::class);
     }
 }
