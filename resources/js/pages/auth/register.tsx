@@ -12,7 +12,7 @@ import { login } from '@/routes';
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
-        email: '',
+        username: '',
         password: '',
         password_confirmation: '',
     });
@@ -49,19 +49,19 @@ export default function Register() {
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
+                        <Label htmlFor="username">Username</Label>
                         <Input
-                            id="email"
-                            type="email"
-                            name="email"
-                            value={data.email}
+                            id="username"
+                            type="text"
+                            name="username"
+                            value={data.username}
                             className="mt-1 block w-full"
                             autoComplete="username"
                             placeholder="name@example.com"
-                            onChange={(e) => setData('email', e.target.value)}
+                            onChange={(e) => setData('username', e.target.value)}
                             required
                         />
-                        <InputError message={errors.email} className="mt-2" />
+                        <InputError message={errors.username} className="mt-2" />
                     </div>
 
                     <div className="grid gap-2">
