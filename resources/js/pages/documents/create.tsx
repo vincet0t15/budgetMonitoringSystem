@@ -91,10 +91,9 @@ export default function CreateDocument({
         }
     };
 
-    console.log(offices);
-
-    const onChangeOffice = (value: string) => {
-        setData({ ...data, office_id: value });
+    const onChangeOffice = (name: string | null) => {
+        const office = offices.find((o) => o.name === name);
+        setData('office_id', office ? office.id : '');
     };
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -107,7 +106,7 @@ export default function CreateDocument({
                         </DialogDescription>
                     </DialogHeader>
 
-                    <div className="grid gap-2">
+                    <div className="grid gap-2  ">
                         <Label>Serial No.</Label>
                         <Input
                             value={data.serial_no}
@@ -119,27 +118,33 @@ export default function CreateDocument({
                         <InputError message={errors.serial_no} />
                     </div>
 
-                    <Combobox
-                        items={offices}
-                        itemToStringValue={(office: OfficeProps) => office.id}
-                    >
-                        <ComboboxInput placeholder="Select an office" />
+                    <div className="grid gap-2">
+                        <Label>Office</Label>
+                        <Combobox
+                            items={offices.map((office) => office.name)}
+                            value={
+                                offices.find(
+                                    (office) => office.id === data.office_id,
+                                )?.name || null
+                            }
+                            onValueChange={onChangeOffice}
+                        >
+                            <ComboboxInput placeholder="Select an office" />
 
-                        <ComboboxContent>
-                            <ComboboxEmpty>No items found.</ComboboxEmpty>
+                            <ComboboxContent>
+                                <ComboboxEmpty>No items found.</ComboboxEmpty>
 
-                            <ComboboxList>
-                                {(office: OfficeProps) => (
-                                    <ComboboxItem
-                                        key={office.id}
-                                        value={String(office.id)}
-                                    >
-                                        {office.name}
-                                    </ComboboxItem>
-                                )}
-                            </ComboboxList>
-                        </ComboboxContent>
-                    </Combobox>
+                                <ComboboxList>
+                                    {(name: string) => (
+                                        <ComboboxItem key={name} value={name}>
+                                            {name}
+                                        </ComboboxItem>
+                                    )}
+                                </ComboboxList>
+                            </ComboboxContent>
+                        </Combobox>
+                        <InputError message={errors.office_id} />
+                    </div>
 
                     <div className="grid gap-2">
                         <Label>Payee</Label>
