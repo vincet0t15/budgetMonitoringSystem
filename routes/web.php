@@ -38,22 +38,23 @@ Route::middleware(['auth', 'verified',])->group(function () {
     Route::get('documents/{document}/edit', [DocumentController::class, 'edit'])->name('documents.edit');
     Route::delete('documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
 
-    //ACCOUNTS
-    Route::get('accounts', [AccountController::class, 'index'])->name('accounts.index');
-    Route::post('accounts', [AccountController::class, 'store'])->name('accounts.store');
-    Route::put('accounts/{account}', [AccountController::class, 'update'])->name('accounts.update');
-    Route::get('accounts/{account}', [AccountController::class, 'show'])->name('accounts.show');
-    Route::delete('accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
-    Route::put('accounts/{account}/activate', [AccountController::class, 'activate'])->name('accounts.activate');
-    Route::put('accounts/{account}/deactivate', [AccountController::class, 'deactivate'])->name('accounts.deactivate');
-    Route::put('accounts/{account}/toggle-admin', [AccountController::class, 'toggleAdmin'])->name('accounts.toggle-admin');
+    Route::middleware('admin')->group(function () {
+        //ACCOUNTS
+        Route::get('accounts', [AccountController::class, 'index'])->name('accounts.index');
+        Route::post('accounts', [AccountController::class, 'store'])->name('accounts.store');
+        Route::put('accounts/{account}', [AccountController::class, 'update'])->name('accounts.update');
+        Route::get('accounts/{account}', [AccountController::class, 'show'])->name('accounts.show');
+        Route::delete('accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
+        Route::put('accounts/{account}/activate', [AccountController::class, 'activate'])->name('accounts.activate');
+        Route::put('accounts/{account}/deactivate', [AccountController::class, 'deactivate'])->name('accounts.deactivate');
+        Route::put('accounts/{account}/toggle-admin', [AccountController::class, 'toggleAdmin'])->name('accounts.toggle-admin');
 
-
-    //OFFICES
-    Route::get('offices', [OfficeController::class, 'index'])->name('offices.index');
-    Route::post('offices', [OfficeController::class, 'store'])->name('offices.store');
-    Route::put('offices/{office}', [OfficeController::class, 'update'])->name('offices.update');
-    Route::delete('offices/{office}', [OfficeController::class, 'destroy'])->name('offices.destroy');
+        //OFFICES
+        Route::get('offices', [OfficeController::class, 'index'])->name('offices.index');
+        Route::post('offices', [OfficeController::class, 'store'])->name('offices.store');
+        Route::put('offices/{office}', [OfficeController::class, 'update'])->name('offices.update');
+        Route::delete('offices/{office}', [OfficeController::class, 'destroy'])->name('offices.destroy');
+    });
 });
 
 require __DIR__ . '/settings.php';
