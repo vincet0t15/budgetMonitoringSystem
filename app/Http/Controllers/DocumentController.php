@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\Office;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,6 +13,7 @@ class DocumentController extends Controller
 {
     public function store(Request $request)
     {
+
 
         $requestData = $request->all();
 
@@ -30,6 +32,7 @@ class DocumentController extends Controller
             'ammount' => 'required|numeric',
             'project_id' => 'required|exists:projects,id',
             'remarks' => 'nullable|string|max:1000',
+            'office_id' => 'required|exists:offices,id',
         ])->validate();
 
 
@@ -198,8 +201,10 @@ class DocumentController extends Controller
 
     public function register(Project $project)
     {
+        $offices = Office::all();
         return Inertia::render('documents/register', [
-            'projectId' => $project,
+            'project' => $project,
+            'offices' => $offices,
         ]);
     }
 }

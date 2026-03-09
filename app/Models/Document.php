@@ -21,6 +21,7 @@ class Document extends Model
         'ammount',
         'project_id',
         'remarks',
+        'office_id',
     ];
 
     public function project()
