@@ -16,7 +16,7 @@ import { DocumentProps } from '@/types/document';
 import { PaginatedDataResponse } from '@/types/pagination';
 import Pagination from '@/components/paginationData';
 import { Head, router, useForm } from '@inertiajs/react';
-import { PlusIcon, CheckCircle2, Circle, RotateCcw } from 'lucide-react';
+import { PlusIcon, CheckCircle2, Circle, RotateCcw, CircleCheck, Loader2, Loader } from 'lucide-react';
 import { ProjectProps } from '@/types/project';
 import React, {
     ChangeEventHandler,
@@ -30,6 +30,7 @@ import { Label } from '@/components/ui/label';
 import { FilterProps } from '@/types/filter';
 import projects from '@/routes/projects';
 import { OfficeProps } from '@/types/office';
+import { Badge } from '@/components/ui/badge';
 
 interface Props {
     project: ProjectProps;
@@ -251,18 +252,15 @@ export default function Dashboard({
                                         checked={
                                             selectedIds.length > 0 &&
                                             selectedIds.length ===
-                                                documents.data.length
+                                            documents.data.length
                                         }
                                         onCheckedChange={toggleSelectAll}
                                     />
                                 </TableHead>
-
                                 <TableHead className="">Serial No.</TableHead>
                                 <TableHead className="">Payee</TableHead>
                                 <TableHead className="">Date Created</TableHead>
-                                <TableHead className="">Particulars</TableHead>
                                 <TableHead className="">F.P.P</TableHead>
-                                {/* <TableHead className="">Account Code</TableHead> */}
                                 <TableHead className="">Ammount</TableHead>
                                 <TableHead className="">Remarks</TableHead>
                                 <TableHead className="text-center">
@@ -301,19 +299,18 @@ export default function Dashboard({
                                             </Label>
                                         </TableCell>
                                         <TableCell className="font-medium">
-                                            <Label>{data.date_created}</Label>
+                                            <span className="text-sm text-gray-900">
+                                                {data.date_created
+                                                    ? new Date(data.date_created).toLocaleDateString()
+                                                    : ''}
+                                            </span>
+
                                         </TableCell>
-                                        <TableCell className="max-w-xs overflow-hidden font-medium">
-                                            <Label className="block truncate">
-                                                {data.particulars}
-                                            </Label>
-                                        </TableCell>
+
                                         <TableCell className="font-medium">
                                             <Label>{data.fpp}</Label>
                                         </TableCell>
-                                        {/* <TableCell className="font-medium">
-                                            <Label>{data.account_code}</Label>
-                                        </TableCell> */}
+
                                         <TableCell className="font-medium">
                                             <Label>
                                                 {' '}
@@ -333,20 +330,25 @@ export default function Dashboard({
                                         <TableCell className="text-center">
                                             <div className="flex items-center justify-center gap-2">
                                                 {isDocumentReturned(data) ? (
-                                                    <div className="flex items-center gap-1">
+                                                    <Badge className="px-1.5 text-muted-foreground bg-teal-100">
                                                         <CheckCircle2 className="h-5 w-5 text-green-600" />
-                                                        <span className="text-xs text-gray-500">
+                                                        <span className="text-xs text-gray-900">
                                                             {getReturnDate(data)
                                                                 ? new Date(
-                                                                      getReturnDate(
-                                                                          data,
-                                                                      ) || '',
-                                                                  ).toLocaleDateString()
+                                                                    getReturnDate(
+                                                                        data,
+                                                                    ) || '',
+                                                                ).toLocaleDateString()
                                                                 : ''}
                                                         </span>
-                                                    </div>
+                                                    </Badge>
                                                 ) : (
-                                                    <span>--</span>
+                                                    <Badge className="px-1.5 text-muted-foreground bg-orange-100">
+                                                        <Loader className="h-5 w-5 text-red-600" />
+                                                        <span className="text-xs text-gray-900">
+                                                            In Process
+                                                        </span>
+                                                    </Badge>
                                                 )}
                                             </div>
                                         </TableCell>
