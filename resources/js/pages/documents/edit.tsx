@@ -17,14 +17,29 @@ import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { ChangeEventHandler, SubmitEventHandler, useEffect } from 'react';
 import { toast } from 'sonner';
+import {
+    Combobox,
+    ComboboxContent,
+    ComboboxEmpty,
+    ComboboxInput,
+    ComboboxItem,
+    ComboboxList,
+} from '@/components/ui/combobox';
+import { OfficeProps } from '@/types/office';
 
 interface Props {
     open: boolean;
     setOpen: (open: boolean) => void;
     document: DocumentProps | null;
+    offices: OfficeProps[];
 }
 
-export default function EditDocument({ open, setOpen, document }: Props) {
+export default function EditDocument({
+    open,
+    setOpen,
+    document,
+    offices,
+}: Props) {
     const { data, setData, processing, errors, put, reset } =
         useForm<DocumentTypes>({
             payee: '',
@@ -35,6 +50,7 @@ export default function EditDocument({ open, setOpen, document }: Props) {
             ammount: '',
             project_id: document?.project_id ?? 0,
             remarks: document?.remarks ?? '',
+            office_id: document?.office_id ?? '',
         });
 
     useEffect(() => {
@@ -48,6 +64,7 @@ export default function EditDocument({ open, setOpen, document }: Props) {
                 ammount: document.ammount,
                 project_id: document.project_id,
                 remarks: document.remarks ?? '',
+                office_id: document.office_id,
             });
         }
     }, [document]);
@@ -67,6 +84,11 @@ export default function EditDocument({ open, setOpen, document }: Props) {
                 setOpen(false);
             },
         });
+    };
+
+    const onChangeOffice = (name: string | null) => {
+        const office = offices.find((o) => o.name === name);
+        setData('office_id', office ? office.id : '');
     };
 
     const handleInputChange: ChangeEventHandler<
@@ -118,6 +140,34 @@ export default function EditDocument({ open, setOpen, document }: Props) {
                             onChange={handleInputChange}
                         />
                         <InputError message={errors.serial_no} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label>Office</Label>
+                        <Combobox
+                            items={offices.map((office) => office.name)}
+                            value={
+                                offices.find(
+                                    (office) => office.id === data.office_id,
+                                )?.name || null
+                            }
+                            onValueChange={onChangeOffice}
+                        >
+                            <ComboboxInput placeholder="Select an office" />
+
+                            <ComboboxContent>
+                                <ComboboxEmpty>No items found.</ComboboxEmpty>
+
+                                <ComboboxList>
+                                    {(name: string) => (
+                                        <ComboboxItem key={name} value={name}>
+                                            {name}
+                                        </ComboboxItem>
+                                    )}
+                                </ComboboxList>
+                            </ComboboxContent>
+                        </Combobox>
+                        <InputError message={errors.office_id} />
                     </div>
 
                     <div className="grid gap-2">

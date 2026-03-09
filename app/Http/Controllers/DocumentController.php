@@ -14,9 +14,7 @@ class DocumentController extends Controller
     public function store(Request $request)
     {
 
-
         $requestData = $request->all();
-
 
         if (isset($requestData['ammount'])) {
             $requestData['ammount'] = str_replace(',', '', $requestData['ammount']);
@@ -60,6 +58,7 @@ class DocumentController extends Controller
             'account_code' => 'nullable|string|max:255',
             'ammount' => 'required|numeric',
             'remarks' => 'nullable|string|max:1000',
+            'office_id' => 'required|exists:offices,id',
         ])->validate();
 
         $document->update($validated);

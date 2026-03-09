@@ -410,6 +410,7 @@ export default function Dashboard({
                         open={openEditDocument}
                         setOpen={setOpenEditDocument}
                         document={editingDocument}
+                        offices={offices}
                     />
                 )}
                 {openViewDocument && viewingDocument && (
