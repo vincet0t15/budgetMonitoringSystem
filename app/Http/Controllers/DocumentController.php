@@ -198,7 +198,8 @@ class DocumentController extends Controller
 
     public function register(Project $project)
     {
-
-        Inertia::render('documents/register');
+        return Inertia::render('documents/register', [
+            'projectId' => $project,
+        ]);
     }
 }

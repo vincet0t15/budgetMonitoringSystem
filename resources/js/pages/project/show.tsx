@@ -194,7 +194,7 @@ export default function Dashboard({
                         <Button
                             className="cursor-pointer rounded-sm"
                             onClick={() =>
-                                router.get(documents.register(project.id))
+                                router.get(documents.register.url(project.id))
                             }
                         >
                             <PlusIcon />
