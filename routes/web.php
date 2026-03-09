@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\OfficeController;
@@ -36,6 +37,14 @@ Route::middleware(['auth', 'verified',])->group(function () {
     Route::get('documents/register/{project}', [DocumentController::class, 'register'])->name('documents.register');
     Route::get('documents/{document}/edit', [DocumentController::class, 'edit'])->name('documents.edit');
     Route::delete('documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
+
+    //ACCOUNTS
+    Route::get('accounts', [AccountController::class, 'index'])->name('accounts.index');
+    Route::post('accounts', [AccountController::class, 'store'])->name('accounts.store');
+    Route::put('accounts/{account}', [AccountController::class, 'update'])->name('accounts.update');
+    Route::get('accounts/{account}', [AccountController::class, 'show'])->name('accounts.show');
+    Route::delete('accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
+
 
     //OFFICES
     Route::get('offices', [OfficeController::class, 'index'])->name('offices.index');

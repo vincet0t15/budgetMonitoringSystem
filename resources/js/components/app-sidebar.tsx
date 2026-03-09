@@ -13,6 +13,8 @@ import {
     PieChart,
     Settings2,
     SquareTerminal,
+    UserCheck2,
+    Users2Icon,
 } from 'lucide-react';
 
 import { NavMain } from '@/components/nav-main';
@@ -30,6 +32,7 @@ import { usePage } from '@inertiajs/react';
 import { NavItem } from '@/types/navigation';
 import offices from '@/routes/offices';
 import { NavFooter } from './nav-footer';
+import accounts from '@/routes/accounts';
 
 const data = {
     user: {
@@ -147,6 +150,11 @@ const footerNavItems: NavItem[] = [
         title: 'Office',
         href: offices.index.url(),
         icon: Building2,
+    },
+    {
+        title: 'Accounts',
+        href: accounts.index.url(),
+        icon: Users2Icon,
     },
 ];
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
