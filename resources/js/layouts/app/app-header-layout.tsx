@@ -1,5 +1,6 @@
 import { AppContent } from '@/components/app-content';
-import { AppHeader } from '@/components/app-header';
+import { Navbar1 } from '@/components/app-header';
+// import { AppHeader } from '@/components/app-header';
 import { AppShell } from '@/components/app-shell';
 import type { AppLayoutProps } from '@/types';
 
@@ -9,8 +10,9 @@ export default function AppHeaderLayout({
 }: AppLayoutProps) {
     return (
         <AppShell>
-            <AppHeader breadcrumbs={breadcrumbs} />
-            <AppContent className='w-full'>{children}</AppContent>
+            {/* <AppHeader breadcrumbs={breadcrumbs} /> */}
+            <Navbar1 />
+            <AppContent className='container mx-auto'>{children}</AppContent>
         </AppShell>
     );
 }
