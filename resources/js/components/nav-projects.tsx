@@ -101,10 +101,7 @@ export function NavProjects({ projects }: { projects: SharedProjects }) {
                                         side={isMobile ? 'bottom' : 'right'}
                                         align={isMobile ? 'end' : 'start'}
                                     >
-                                        <DropdownMenuItem>
-                                            <Folder className="text-muted-foreground" />
-                                            <span>View Project</span>
-                                        </DropdownMenuItem>
+
                                         <DropdownMenuItem
                                             onClick={() =>
                                                 handleClickEdit(item)
