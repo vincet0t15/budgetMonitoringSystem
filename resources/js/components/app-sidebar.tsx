@@ -161,18 +161,31 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { auth, sharedProjects } = usePage().props as any;
 
     return (
-        <Sidebar collapsible="icon" {...props}>
-            <SidebarHeader>
-                <TeamSwitcher teams={data.teams} />
-            </SidebarHeader>
-            <SidebarContent>
-                <NavProjects projects={sharedProjects} />
-            </SidebarContent>
-            <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
-                <NavUser user={auth.user} />
-            </SidebarFooter>
-            <SidebarRail />
-        </Sidebar>
+        <Sidebar collapsible="offcanvas" variant="inset">
+            <div className="relative flex h-full w-full flex-col overflow-hidden rounded-sm">
+                <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0"
+                >
+                    <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-primary/12 to-transparent" />
+                    <div className="absolute -top-28 -left-28 size-72 rounded-full bg-primary/12 blur-3xl" />
+                    <div className="absolute -right-40 -bottom-40 size-96 rounded-full bg-primary/10 blur-3xl" />
+                </div>
+
+                <div className="relative z-10 flex h-full w-full flex-col">
+                    <SidebarHeader>
+                        <TeamSwitcher teams={data.teams} />
+                    </SidebarHeader>
+                    <SidebarContent>
+                        <NavProjects projects={sharedProjects} />
+                    </SidebarContent>
+                    <SidebarFooter>
+                        <NavFooter items={footerNavItems} className="mt-auto" />
+                        <NavUser user={auth.user} />
+                    </SidebarFooter>
+                    <SidebarRail />
+                </div>
+            </div>
+        </Sidebar >
     );
 }
