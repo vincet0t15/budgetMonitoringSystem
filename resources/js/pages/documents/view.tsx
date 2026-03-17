@@ -5,8 +5,8 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import { DocumentProps } from '@/types/document';
 import { Label } from '@/components/ui/label';
+import type { DocumentProps } from '@/types/document';
 
 interface Props {
     open: boolean;

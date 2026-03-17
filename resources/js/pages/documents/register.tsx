@@ -1,10 +1,18 @@
-import AppLayout from '@/layouts/app-layout'
-import { BreadcrumbItem } from '@/types';
-import { OfficeProps } from '@/types/office';
-import { ProjectProps } from '@/types/project';
 import { Head } from '@inertiajs/react'
+import { useForm } from '@inertiajs/react';
+import { LoaderCircle } from 'lucide-react';
+import type { ChangeEventHandler, SubmitEventHandler } from 'react';
+import { toast } from 'sonner';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
+import {
+    Combobox,
+    ComboboxContent,
+    ComboboxEmpty,
+    ComboboxInput,
+    ComboboxItem,
+    ComboboxList,
+} from '@/components/ui/combobox';
 import {
     Dialog,
     DialogContent,
@@ -16,20 +24,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import AppLayout from '@/layouts/app-layout'
 import documents from '@/routes/documents';
 import { DocumentTypes } from '@/types/document';
-import { useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { ChangeEventHandler, SubmitEventHandler } from 'react';
-import { toast } from 'sonner';
-import {
-    Combobox,
-    ComboboxContent,
-    ComboboxEmpty,
-    ComboboxInput,
-    ComboboxItem,
-    ComboboxList,
-} from '@/components/ui/combobox';
+import type { BreadcrumbItem } from '@/types';
+import type { OfficeProps } from '@/types/office';
+import type { ProjectProps } from '@/types/project';
 interface RegisterProps {
     project: ProjectProps;
     offices: OfficeProps[];
@@ -72,7 +72,7 @@ export default function register({ project, offices }: RegisterProps) {
         const { name, value } = e.target;
 
         if (name === 'ammount') {
-            let numericValue = value.replace(/,/g, '');
+            const numericValue = value.replace(/,/g, '');
 
             if (!/^\d*\.?\d*$/.test(numericValue)) return;
 

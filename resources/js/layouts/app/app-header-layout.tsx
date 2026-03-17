@@ -10,7 +10,7 @@ export default function AppHeaderLayout({
     return (
         <AppShell>
             <AppHeader breadcrumbs={breadcrumbs} />
-            <AppContent>{children}</AppContent>
+            <AppContent className='w-full'>{children}</AppContent>
         </AppShell>
     );
 }

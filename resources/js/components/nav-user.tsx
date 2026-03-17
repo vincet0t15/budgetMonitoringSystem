@@ -1,3 +1,4 @@
+import { Link, router } from '@inertiajs/react';
 import {
     BadgeCheck,
     Bell,
@@ -22,9 +23,8 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar';
-import { Link, router } from '@inertiajs/react';
-import { logout } from '@/routes';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
+import { logout } from '@/routes';
 
 export function NavUser({
     user,

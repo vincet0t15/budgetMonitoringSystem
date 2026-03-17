@@ -1,7 +1,8 @@
 'use client';
 
-import * as React from 'react';
+import { Link, router } from '@inertiajs/react';
 import { ChevronsUpDown, Plus } from 'lucide-react';
+import * as React from 'react';
 
 import {
     DropdownMenu,
@@ -18,7 +19,6 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar';
-import { Link, router } from '@inertiajs/react';
 import { dashboard } from '@/routes';
 
 export function TeamSwitcher({

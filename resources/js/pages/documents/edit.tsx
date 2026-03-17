@@ -1,18 +1,10 @@
-import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
-import { DocumentProps, DocumentTypes } from '@/types/document';
-import { OfficeProps } from '@/types/office';
-import { ProjectProps } from '@/types/project';
 import { Head, useForm } from '@inertiajs/react';
+import { LoaderCircle } from 'lucide-react';
+import type { ChangeEventHandler, SubmitEventHandler} from 'react';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import documents from '@/routes/documents';
-import { LoaderCircle } from 'lucide-react';
-import { ChangeEventHandler, SubmitEventHandler, useEffect } from 'react';
-import { toast } from 'sonner';
 import {
     Combobox,
     ComboboxContent,
@@ -21,6 +13,15 @@ import {
     ComboboxItem,
     ComboboxList,
 } from '@/components/ui/combobox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import AppLayout from '@/layouts/app-layout';
+import { BreadcrumbItem } from '@/types';
+import { DocumentProps, DocumentTypes } from '@/types/document';
+import { OfficeProps } from '@/types/office';
+import { ProjectProps } from '@/types/project';
+import { Textarea } from '@/components/ui/textarea';
+import documents from '@/routes/documents';
 
 interface Props {
     document: DocumentProps;
@@ -84,7 +85,7 @@ export default function EditDocument({ document, project, offices }: Props) {
         const { name, value } = e.target;
 
         if (name === 'ammount') {
-            let numericValue = value.replace(/,/g, '');
+            const numericValue = value.replace(/,/g, '');
 
             if (!/^\d*\.?\d*$/.test(numericValue)) return;
 

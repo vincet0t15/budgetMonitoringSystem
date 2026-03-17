@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { usePage } from '@inertiajs/react';
 import {
     AudioWaveform,
     BookOpen,
@@ -16,6 +16,7 @@ import {
     UserCheck2,
     Users2Icon,
 } from 'lucide-react';
+import * as React from 'react';
 
 import { NavMain } from '@/components/nav-main';
 import { NavProjects } from '@/components/nav-projects';
@@ -28,11 +29,10 @@ import {
     SidebarHeader,
     SidebarRail,
 } from '@/components/ui/sidebar';
-import { usePage } from '@inertiajs/react';
-import { NavItem } from '@/types/navigation';
-import offices from '@/routes/offices';
-import { NavFooter } from './nav-footer';
 import accounts from '@/routes/accounts';
+import offices from '@/routes/offices';
+import type { NavItem } from '@/types/navigation';
+import { NavFooter } from './nav-footer';
 
 const data = {
     user: {

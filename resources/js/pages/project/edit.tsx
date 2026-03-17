@@ -1,3 +1,5 @@
+import { useForm } from '@inertiajs/react';
+import type { ChangeEventHandler, SubmitEventHandler } from 'react';
 import InputError from '@/components/input-error';
 
 import { Button } from '@/components/ui/button';
@@ -14,9 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import projects from '@/routes/projects';
-import { ProjectProps, ProjectType } from '@/types/project';
-import { useForm } from '@inertiajs/react';
-import { ChangeEventHandler, SubmitEventHandler } from 'react';
+import type { ProjectProps, ProjectType } from '@/types/project';
 interface Props {
     open: boolean;
     isOpen: (open: boolean) => void;

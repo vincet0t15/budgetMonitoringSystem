@@ -1,10 +1,4 @@
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ProjectProps } from '@/types/project';
-import { DocumentProps } from '@/types/document';
-import { Badge } from '@/components/ui/badge';
 import {
   FolderIcon,
   FileTextIcon,
@@ -13,6 +7,12 @@ import {
   Building2Icon,
   UsersIcon
 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import AppLayout from '@/layouts/app-layout';
+import type {BreadcrumbItem} from '@/types';
+import type { DocumentProps } from '@/types/document';
+import type { ProjectProps } from '@/types/project';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {

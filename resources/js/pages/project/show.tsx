@@ -1,7 +1,18 @@
+import { Head, router, useForm } from '@inertiajs/react';
+import { PlusIcon, CheckCircle2, Circle, RotateCcw, CircleCheck, Loader2, Loader } from 'lucide-react';
+import type {
+    ChangeEventHandler,
+    KeyboardEventHandler} from 'react';
+import React, {
+    useState,
+} from 'react';
+import { toast } from 'sonner';
+import Pagination from '@/components/paginationData';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
     Table,
     TableBody,
@@ -10,29 +21,19 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { DocumentProps } from '@/types/document';
-import { PaginatedDataResponse } from '@/types/pagination';
-import Pagination from '@/components/paginationData';
-import { Head, router, useForm } from '@inertiajs/react';
-import { PlusIcon, CheckCircle2, Circle, RotateCcw, CircleCheck, Loader2, Loader } from 'lucide-react';
-import { ProjectProps } from '@/types/project';
-import React, {
-    ChangeEventHandler,
-    KeyboardEventHandler,
-    useState,
-} from 'react';
-
-import ViewDocument from '../documents/view';
-import { Label } from '@/components/ui/label';
-import { FilterProps } from '@/types/filter';
 import projects from '@/routes/projects';
-import { OfficeProps } from '@/types/office';
-import { Badge } from '@/components/ui/badge';
-import documents from '@/routes/documents';
-import { toast } from 'sonner';
+import type {BreadcrumbItem} from '@/types';
+import type { DocumentProps } from '@/types/document';
+import type { FilterProps } from '@/types/filter';
+import { PaginatedDataResponse } from '@/types/pagination';
+import type { ProjectProps } from '@/types/project';
+
 import DeleteDocument from '../documents/delete';
+import ViewDocument from '../documents/view';
+import type { OfficeProps } from '@/types/office';
+import documents from '@/routes/documents';
 
 
 interface Props {

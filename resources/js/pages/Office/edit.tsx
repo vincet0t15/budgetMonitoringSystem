@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 import offices from '@/routes/offices';
-import { OfficeProps, OfficeType } from '@/types/office';
+import type { OfficeProps, OfficeType } from '@/types/office';
 
 interface Props {
     open: boolean;

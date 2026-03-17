@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import offices from '@/routes/offices';
-import { OfficeProps } from '@/types/office';
+import type { OfficeProps } from '@/types/office';
 
 interface Props {
     open: boolean;

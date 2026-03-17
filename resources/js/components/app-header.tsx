@@ -1,8 +1,20 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import {
+    BookOpen,
+    ChevronRight,
+    Folder,
+    LayoutGrid,
+    Menu,
+    Search,
+} from 'lucide-react';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,6 +28,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import {
     Sheet,
+    SheetClose,
     SheetContent,
     SheetHeader,
     SheetTitle,
@@ -31,13 +44,20 @@ import { UserMenuContent } from '@/components/user-menu-content';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
 import { cn, toUrl } from '@/lib/utils';
+import { dashboard } from '@/routes';
 import type { BreadcrumbItem, NavItem } from '@/types';
+import type { ProjectProps } from '@/types/project';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
-import { dashboard } from '@/routes';
+import { NavigationMenuDemo } from './navigation-link';
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
+};
+
+type SharedProjects = {
+    items: ProjectProps[];
+    total: number;
 };
 
 const mainNavItems: NavItem[] = [
@@ -66,13 +86,18 @@ const activeItemStyles =
 
 export function AppHeader({ breadcrumbs = [] }: Props) {
     const page = usePage();
-    const { auth } = page.props;
+    const { auth, sharedProjects } = page.props as unknown as {
+        auth: any;
+        sharedProjects?: SharedProjects;
+    };
     const getInitials = useInitials();
     const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
+    const projectItems = sharedProjects?.items ?? [];
+    const totalProjects = sharedProjects?.total ?? 0;
     return (
         <>
             <div className="border-b border-sidebar-border/80">
-                <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
+                <div className="mx-auto flex h-16 items-center px-4 ">
                     {/* Mobile Menu */}
                     <div className="lg:hidden">
                         <Sheet>
@@ -110,6 +135,61 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                                     <span>{item.title}</span>
                                                 </Link>
                                             ))}
+                                            <Collapsible className="group/collapsible">
+                                                <CollapsibleTrigger asChild>
+                                                    <button
+                                                        type="button"
+                                                        className="flex w-full items-center space-x-2 font-medium"
+                                                    >
+                                                        <Folder className="h-5 w-5" />
+                                                        <span>Projects</span>
+                                                        <ChevronRight className="ml-auto h-5 w-5 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                                                    </button>
+                                                </CollapsibleTrigger>
+                                                <CollapsibleContent className="mt-2 space-y-2 pl-7">
+                                                    {projectItems.length > 0 ? (
+                                                        <>
+                                                            {projectItems.map(
+                                                                (project) => (
+                                                                    <SheetClose
+                                                                        key={
+                                                                            project.id
+                                                                        }
+                                                                        asChild
+                                                                    >
+                                                                        <Link
+                                                                            href={`/projects/${project.id}`}
+                                                                            className="block text-sm text-muted-foreground hover:text-foreground"
+                                                                        >
+                                                                            {
+                                                                                project.name
+                                                                            }
+                                                                        </Link>
+                                                                    </SheetClose>
+                                                                ),
+                                                            )}
+                                                            {totalProjects >
+                                                                projectItems.length && (
+                                                                    <SheetClose
+                                                                        asChild
+                                                                    >
+                                                                        <Link
+                                                                            href="/projects"
+                                                                            className="block text-sm font-medium"
+                                                                        >
+                                                                            View all
+                                                                            projects
+                                                                        </Link>
+                                                                    </SheetClose>
+                                                                )}
+                                                        </>
+                                                    ) : (
+                                                        <span className="block text-sm text-muted-foreground">
+                                                            No projects yet
+                                                        </span>
+                                                    )}
+                                                </CollapsibleContent>
+                                            </Collapsible>
                                         </div>
 
                                         <div className="flex flex-col space-y-4">
@@ -172,6 +252,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                         )}
                                     </NavigationMenuItem>
                                 ))}
+                                <NavigationMenuDemo />
                             </NavigationMenuList>
                         </NavigationMenu>
                     </div>

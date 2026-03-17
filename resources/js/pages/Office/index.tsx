@@ -19,11 +19,11 @@ import offices from '@/routes/offices';
 import type { BreadcrumbItem } from '@/types';
 import type { FilterProps } from '@/types/filter';
 
+import type { OfficeProps } from '@/types/office';
 import type { PaginatedDataResponse } from '@/types/pagination';
 import { OfficeCreateDialog } from './create';
 import DeleteOffice from './delete';
 import { OfficeEditDialog } from './edit';
-import { OfficeProps } from '@/types/office';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

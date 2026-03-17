@@ -1,12 +1,19 @@
-import AppLayout from '@/layouts/app-layout'
 import { Head } from '@inertiajs/react'
-import { User, type BreadcrumbItem } from '@/types';
-import accounts from '@/routes/accounts';
-import { PaginatedDataResponse } from '@/types/pagination';
-import { FilterProps } from '@/types/filter';
-import { Input } from '@/components/ui/input';
-import { ChangeEventHandler, KeyboardEventHandler, useState } from 'react';
+import { router } from '@inertiajs/react';
+import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
+import type { ChangeEventHandler, KeyboardEventHandler} from 'react';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import ConfirmationAlert from '@/components/confirmation-alert';
 import Pagination from '@/components/paginationData';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import AppLayout from '@/layouts/app-layout'
+import { User  } from '@/types';
+import type {BreadcrumbItem} from '@/types';
+import accounts from '@/routes/accounts';
+import { FilterProps } from '@/types/filter';
+import { PaginatedDataResponse } from '@/types/pagination';
 import {
     Table,
     TableBody,
@@ -15,11 +22,6 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
-import ConfirmationAlert from '@/components/confirmation-alert';
-import { router } from '@inertiajs/react';
-import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

@@ -1,3 +1,5 @@
+import { router } from '@inertiajs/react';
+import { toast } from 'sonner';
 import {
     AlertDialog,
     AlertDialogContent,
@@ -9,10 +11,8 @@ import {
 import { Button } from '@/components/ui/button';
 import projects from '@/routes/projects';
 import { DocumentProps } from '@/types/document';
-import { ProjectProps } from '@/types/project';
+import type { ProjectProps } from '@/types/project';
 
-import { router } from '@inertiajs/react';
-import { toast } from 'sonner';
 interface Props {
     open: boolean;
     setOpen: (open: boolean) => void;

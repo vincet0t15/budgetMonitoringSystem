@@ -1,4 +1,4 @@
-import { OfficeProps } from "./office";
+import type { OfficeProps } from "./office";
 
 export interface ReceivedBackDocument {
     id: number;

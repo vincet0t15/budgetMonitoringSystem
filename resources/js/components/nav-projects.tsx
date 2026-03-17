@@ -1,16 +1,19 @@
 'use client';
 
+import { Link, usePage } from '@inertiajs/react';
 import {
     Folder,
     Forward,
     MoreHorizontal,
     PlusIcon,
     Trash2,
-    type LucideIcon,
+    
     Frame,
-    PenLineIcon,
+    PenLineIcon
 } from 'lucide-react';
+import type {LucideIcon} from 'lucide-react';
 
+import { useState } from 'react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -27,12 +30,10 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar';
-import { useState } from 'react';
 import { CreateProjectDialog } from '@/pages/project/create';
-import { Link, usePage } from '@inertiajs/react';
-import { ProjectProps } from '@/types/project';
-import { EditProjectDialog } from '@/pages/project/edit';
 import DeleteProject from '@/pages/project/delete';
+import { EditProjectDialog } from '@/pages/project/edit';
+import type { ProjectProps } from '@/types/project';
 
 type Project = {
     id: number;
