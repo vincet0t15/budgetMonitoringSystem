@@ -1,9 +1,9 @@
 import { usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-// import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
 import { Toaster } from '@/components/ui/sonner';
-import AppLayoutTemplate from '@/layouts/app/app-header-layout';
+import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
+// import AppLayoutTemplate from '@/layouts/app/app-header-layout';
 import type { AppLayoutProps } from '@/types';
 
 export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
