@@ -1,4 +1,4 @@
-import { Head, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import {
   FolderIcon,
   FileTextIcon,
@@ -144,17 +144,31 @@ export default function Dashboard({ stats, recentProjects, recentDocuments }: Da
         <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
           <Card className="col-span-1 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/10">
             <CardHeader>
-              <CardTitle className="text-primary">Recent Projects</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-primary">Recent Projects</CardTitle>
+                <Link
+                  href="/projects"
+                  className="text-xs font-medium text-primary hover:underline"
+                >
+                  View all
+                </Link>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {recentProjects.length > 0 ? (
                   recentProjects.map((project) => (
-                    <div key={project.id} className="flex items-center justify-between border-b pb-2 last:border-0 border-primary/10">
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium leading-none text-primary">{project.name}</p>
+                    <Link
+                      key={project.id}
+                      href={`/projects/${project.id}`}
+                      className="flex items-center justify-between  rounded-md border-b pb-2 last:border-0 border-primary/10 hover:bg-primary/5"
+                    >
+                      <div className=" justify-center">
+                        <p className="text-sm font-medium leading-none text-primary p-2">
+                          {project.name}
+                        </p>
                       </div>
-                    </div>
+                    </Link>
                   ))
                 ) : (
                   <p className="text-sm text-muted-foreground">No recent projects found.</p>
@@ -165,13 +179,25 @@ export default function Dashboard({ stats, recentProjects, recentDocuments }: Da
 
           <Card className="col-span-1 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/10">
             <CardHeader>
-              <CardTitle className="text-primary">Recent Documents</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-primary">Recent Documents</CardTitle>
+                <Link
+                  href="/projects"
+                  className="text-xs font-medium text-primary hover:underline"
+                >
+                  View all
+                </Link>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {recentDocuments.length > 0 ? (
                   recentDocuments.map((doc) => (
-                    <div key={doc.id} className="flex items-center justify-between border-b pb-2 last:border-0 border-primary/10">
+                    <Link
+                      key={doc.id}
+                      href={`/documents/${doc.id}/edit`}
+                      className="flex items-center p-2 justify-between items-center rounded-md border-b pb-2 last:border-0 border-primary/10 hover:bg-primary/5"
+                    >
                       <div className="space-y-1">
                         <p className="text-sm font-medium leading-none">{doc.payee}</p>
                         <p className="text-xs text-muted-foreground truncate max-w-[200px]">
@@ -184,7 +210,7 @@ export default function Dashboard({ stats, recentProjects, recentDocuments }: Da
                           {formatDate(doc.date_created)}
                         </p>
                       </div>
-                    </div>
+                    </Link>
                   ))
                 ) : (
                   <p className="text-sm text-muted-foreground">No recent documents found.</p>
