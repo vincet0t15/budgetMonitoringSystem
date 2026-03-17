@@ -319,7 +319,7 @@ export default function Dashboard({
                                             </span>
                                         </TableCell>
                                         <TableCell className="font-medium">
-                                            <Label>{data.office?.name || '-'}</Label>
+                                            <Label>{data.office?.code || '-'}</Label>
                                         </TableCell>
                                         <TableCell className="font-medium">
                                             <Label>{data.fpp}</Label>
