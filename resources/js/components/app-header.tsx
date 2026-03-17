@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { Label } from "./ui/label";
+import AppLogo from "./app-logo";
 
 interface MenuItem {
     title: string;
@@ -58,12 +59,7 @@ interface Navbar1Props {
 }
 
 const Navbar1 = ({
-    logo = {
-        url: "https://www.shadcnblocks.com",
-        src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
-        alt: "logo",
-        title: "Carding",
-    },
+
     menu = [
         { title: "Home", url: "#" },
         {
@@ -153,16 +149,7 @@ const Navbar1 = ({
                 <nav className="hidden items-center justify-between lg:flex">
                     <div className="flex items-center gap-6">
                         {/* Logo */}
-                        <a href={logo.url} className="flex items-center gap-2">
-                            <img
-                                src={logo.src}
-                                className="max-h-8 dark:invert"
-                                alt={logo.alt}
-                            />
-                            <span className="text-lg font-semibold tracking-tighter">
-                                {logo.title}
-                            </span>
-                        </a>
+                        <AppLogo />
                         <div className="flex items-center">
                             <NavigationMenu>
                                 <NavigationMenuList>
@@ -186,14 +173,7 @@ const Navbar1 = ({
                     <div className="flex items-center justify-between">
                         {/* Logo */}
                         <div className="flex items-center gap-2">
-                            <a href={logo.url} className="flex items-center gap-2">
-                                <img
-                                    src={logo.src}
-                                    className="max-h-8 dark:invert"
-                                    alt={logo.alt}
-                                />
-                            </a>
-                            <Label>Carding</Label>
+                            <AppLogo />
                         </div>
                         <Sheet>
                             <SheetTrigger asChild>
@@ -204,14 +184,7 @@ const Navbar1 = ({
                             <SheetContent className="overflow-y-auto">
                                 <SheetHeader>
                                     <SheetTitle className="flex gap-2 items-center">
-                                        <a href={logo.url} className="flex items-center gap-2">
-                                            <img
-                                                src={logo.src}
-                                                className="max-h-8 dark:invert"
-                                                alt={logo.alt}
-                                            />
-                                        </a>
-                                        <Label>Carding</Label>
+                                        <AppLogo />
                                     </SheetTitle>
                                 </SheetHeader>
                                 <div className="flex flex-col gap-6 p-4">
