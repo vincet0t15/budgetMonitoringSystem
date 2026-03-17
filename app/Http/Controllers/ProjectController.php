@@ -12,7 +12,14 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        return inertia('Projects/Index');
+        $user = Auth::user();
+        $projects = $user
+            ? Project::where('user_id', $user->id)->latest()->paginate(20)
+            : collect([]);
+
+        return inertia('Projects/Index', [
+            'projectList' => $projects,
+        ]);
     }
 
     public function store(Request $request)
