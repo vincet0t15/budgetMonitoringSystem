@@ -8,12 +8,6 @@ import ConfirmationAlert from '@/components/confirmation-alert';
 import Pagination from '@/components/paginationData';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import AppLayout from '@/layouts/app-layout'
-import { User  } from '@/types';
-import type {BreadcrumbItem} from '@/types';
-import accounts from '@/routes/accounts';
-import { FilterProps } from '@/types/filter';
-import { PaginatedDataResponse } from '@/types/pagination';
 import {
     Table,
     TableBody,
@@ -22,6 +16,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import AppLayout from '@/layouts/app-layout'
+import accounts from '@/routes/accounts';
+import type { User  } from '@/types';
+import type {BreadcrumbItem} from '@/types';
+import type { FilterProps } from '@/types/filter';
+import type { PaginatedDataResponse } from '@/types/pagination';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

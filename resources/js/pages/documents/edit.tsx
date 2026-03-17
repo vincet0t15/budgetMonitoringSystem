@@ -15,13 +15,13 @@ import {
 } from '@/components/ui/combobox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
-import { DocumentProps, DocumentTypes } from '@/types/document';
-import { OfficeProps } from '@/types/office';
-import { ProjectProps } from '@/types/project';
 import { Textarea } from '@/components/ui/textarea';
+import AppLayout from '@/layouts/app-layout';
 import documents from '@/routes/documents';
+import type { BreadcrumbItem } from '@/types';
+import type { DocumentProps, DocumentTypes } from '@/types/document';
+import type { OfficeProps } from '@/types/office';
+import type { ProjectProps } from '@/types/project';
 
 interface Props {
     document: DocumentProps;

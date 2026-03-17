@@ -23,17 +23,17 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/app-layout';
+import documents from '@/routes/documents';
 import projects from '@/routes/projects';
 import type {BreadcrumbItem} from '@/types';
 import type { DocumentProps } from '@/types/document';
 import type { FilterProps } from '@/types/filter';
-import { PaginatedDataResponse } from '@/types/pagination';
+import type { OfficeProps } from '@/types/office';
+import type { PaginatedDataResponse } from '@/types/pagination';
 import type { ProjectProps } from '@/types/project';
 
 import DeleteDocument from '../documents/delete';
 import ViewDocument from '../documents/view';
-import type { OfficeProps } from '@/types/office';
-import documents from '@/routes/documents';
 
 
 interface Props {

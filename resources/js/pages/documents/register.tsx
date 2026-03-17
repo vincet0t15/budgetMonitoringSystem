@@ -26,8 +26,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout'
 import documents from '@/routes/documents';
-import { DocumentTypes } from '@/types/document';
 import type { BreadcrumbItem } from '@/types';
+import type { DocumentTypes } from '@/types/document';
 import type { OfficeProps } from '@/types/office';
 import type { ProjectProps } from '@/types/project';
 interface RegisterProps {
