@@ -276,8 +276,9 @@ export default function Dashboard({
                                 <TableHead className="">Date Created</TableHead>
                                 <TableHead className="">Office Originated</TableHead>
                                 <TableHead className="">F.P.P</TableHead>
+                                <TableHead className="">Particulars</TableHead>
                                 <TableHead className="">Ammount</TableHead>
-                                <TableHead className="">Remarks</TableHead>
+                                {/* <TableHead className="">Remarks</TableHead> */}
                                 <TableHead className="text-center">
                                     Return
                                 </TableHead>
@@ -326,7 +327,11 @@ export default function Dashboard({
                                         <TableCell className="font-medium">
                                             <Label>{data.fpp}</Label>
                                         </TableCell>
-
+                                        <TableCell className="max-w-xs overflow-hidden font-medium">
+                                            <Label className="block truncate">
+                                                {data.particulars || '-'}
+                                            </Label>
+                                        </TableCell>
                                         <TableCell className="font-medium">
                                             <Label>
                                                 {' '}
@@ -338,11 +343,11 @@ export default function Dashboard({
                                                 })}
                                             </Label>
                                         </TableCell>
-                                        <TableCell className="max-w-xs overflow-hidden font-medium">
+                                        {/* <TableCell className="max-w-xs overflow-hidden font-medium">
                                             <Label className="block truncate">
                                                 {data.remarks || '-'}
                                             </Label>
-                                        </TableCell>
+                                        </TableCell> */}
                                         <TableCell className="text-center">
                                             <div className="flex items-center justify-center gap-2">
                                                 {isDocumentReturned(data) ? (
