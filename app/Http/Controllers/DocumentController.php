@@ -23,11 +23,11 @@ class DocumentController extends Controller
 
         $validated = Validator::make($requestData, [
             'serial_no' => 'nullable|string|max:255',
-            'payee' => 'required|string|max:255',
+            'payee' => 'nullable|string|max:255',
             'particulars' => 'nullable|string|max:255',
             'fpp' => 'nullable|string|max:255',
             'account_code' => 'nullable|string|max:255',
-            'ammount' => 'required|numeric',
+            'ammount' => 'nullable|numeric',
             'project_id' => 'required|exists:projects,id',
             'remarks' => 'nullable|string|max:1000',
             'office_id' => 'required|exists:offices,id',

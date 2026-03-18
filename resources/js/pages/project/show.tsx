@@ -2,7 +2,8 @@ import { Head, router, useForm } from '@inertiajs/react';
 import { PlusIcon, CheckCircle2, Circle, RotateCcw, CircleCheck, Loader2, Loader } from 'lucide-react';
 import type {
     ChangeEventHandler,
-    KeyboardEventHandler} from 'react';
+    KeyboardEventHandler
+} from 'react';
 import React, {
     useState,
 } from 'react';
@@ -25,7 +26,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/app-layout';
 import documents from '@/routes/documents';
 import projects from '@/routes/projects';
-import type {BreadcrumbItem} from '@/types';
+import type { BreadcrumbItem } from '@/types';
 import type { DocumentProps } from '@/types/document';
 import type { FilterProps } from '@/types/filter';
 import type { OfficeProps } from '@/types/office';
@@ -309,7 +310,7 @@ export default function Dashboard({
                                         </TableCell>
                                         <TableCell className="max-w-xs overflow-hidden font-medium">
                                             <Label className="block truncate">
-                                                {data.payee}
+                                                {data.payee || '-'}
                                             </Label>
                                         </TableCell>
                                         <TableCell className="font-medium">

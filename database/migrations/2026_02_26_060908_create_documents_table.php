@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date_created');
-            $table->text('payee');
+            $table->text('payee')->nullable();
             $table->text('particulars')->nullable();
             $table->text('serial_no');
             $table->text('fpp');
