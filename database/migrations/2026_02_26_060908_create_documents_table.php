@@ -17,9 +17,9 @@ return new class extends Migration
             $table->text('payee')->nullable();
             $table->text('particulars')->nullable();
             $table->text('serial_no');
-            $table->text('fpp');
-            $table->text('account_code');
-            $table->text('ammount');
+            $table->text('fpp')->nullable();
+            $table->text('account_code')->nullable();
+            $table->text('ammount')->nullable();
             $table->text('remarks')->nullable();
             $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
             $table->softDeletes();
